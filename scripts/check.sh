@@ -72,6 +72,83 @@ done
 for file in no-logo logo stress numbering; do
   compile "tests/$file.typ" "build/$file-report.pdf" --input mode=report
 done
+# Exercise label overrides and both question flags in both document modes.
+compile tests/empty-labels.typ build/empty-labels-report.pdf --input mode=report
+compile tests/labels.typ build/labels-report.pdf --input mode=report
+compile tests/labels.typ build/labels-group.pdf --input mode=report --input group=true
+for mode in assignment report; do
+  for hidden in false true; do
+    for box in false true; do
+      compile tests/question-options.typ "build/options-$mode-$hidden-$box.pdf" \
+        --input "mode=$mode" --input "hidden=$hidden" --input "box=$box"
+      metrics="build/options-$mode-$hidden-$box.json"
+      diagnostics="build/options-diagnostics.log"
+      if ! typst eval --root . ${font_flags[@]+"${font_flags[@]}"} \
+        --input "monash-fonts=$fonts" --input "mode=$mode" --input "hidden=$hidden" \
+        --input "box=$box" --in tests/question-options.typ \
+        'query(metadata).find(it => type(it.value) == dictionary and
+          "question-metrics" in it.value).value.question-metrics' \
+        > "$metrics" 2> "$diagnostics"; then
+        cat "$diagnostics"
+        exit 1
+      fi
+      if [[ -s "$diagnostics" ]]; then cat "$diagnostics"; exit 1; fi
+    done
+    perl scripts/assert-question-box.pl "$mode" "$hidden" \
+      "build/options-$mode-$hidden-false.json" "build/options-$mode-$hidden-true.json"
+  done
+
+done
+# Compare actual typeset text and positions, with positive controls for every field.
+snapshot_expression='
+  query(metadata).filter(it => type(it.value) == dictionary and
+    it.value.at("kind", default: none) in ("printed", "anchor", "shape"))
+  .map(it => (kind: it.value.kind, text: it.value.text, page: it.location().page(),
+    x: it.location().position().x.pt(), y: it.location().position().y.pt()))
+'
+mkdir -p build/omission
+snapshot() {
+  local mode="$1" field="$2" variant="$3" output="$4" log="build/omission/diagnostics.log"
+  if ! typst eval --root . ${font_flags[@]+"${font_flags[@]}"} --in tests/omission.typ \
+    --input "monash-fonts=$fonts" --input "mode=$mode" --input "field=$field" \
+    --input "variant=$variant" "$snapshot_expression" > "$output" 2> "$log"; then
+    cat "$log"
+    return 1
+  fi
+  if [[ -s "$log" ]]; then cat "$log"; return 1; fi
+}
+for mode in assignment report; do
+  fields=(student-id unit semester date marks)
+  if [[ "$mode" == assignment ]]; then
+    fields+=(tutor)
+  else
+    fields+=(abstract keywords outline supervisor word-count subtitle doc-type faculty)
+  fi
+  for baseline in common marks; do
+    field=date
+    [[ "$baseline" == marks ]] && field=marks
+    snapshot "$mode" "$field" baseline "build/omission/$mode-$baseline.json"
+  done
+  for field in "${fields[@]}"; do
+    baseline="build/omission/$mode-common.json"
+    [[ "$field" == marks ]] && baseline="build/omission/$mode-marks.json"
+    unset_path="build/omission/$mode-$field-unset.json"
+    present_path="build/omission/$mode-$field-present.json"
+    snapshot "$mode" "$field" unset "$unset_path"
+    snapshot "$mode" "$field" present "$present_path"
+    extra=()
+    if [[ "$field" == marks ]]; then
+      hidden_path="build/omission/$mode-marks-hidden.json"
+      snapshot "$mode" "$field" hidden "$hidden_path"
+      extra+=("$hidden_path")
+    fi
+    if ! perl scripts/assert-omission.pl "$mode" "$field" "$baseline" \
+      "$unset_path" "$present_path" ${extra[@]+"${extra[@]}"}; then
+      failures=$((failures + 1))
+    fi
+  done
+
+done
 # Negative cases are expected failures. Require a panic naming the bad argument.
 negative() {
   local mode="$1" bad="$2" expected="$3" log
@@ -90,6 +167,9 @@ for mode in assignment report; do
   for arg in title author student-id unit semester date short-title info logo font heading-font math-font code-font font-size accent paper lang; do
     negative "$mode" "$arg" "$arg"
   done
+  for arg in labels show-marks question-box; do negative "$mode" "$arg" "$arg"; done
+  negative "$mode" label-key labels.unexpected
+  negative "$mode" label-value labels.question
   negative "$mode" unknown unknown-argument
   negative "$mode" missing-title title
   negative "$mode" relative-size font-size

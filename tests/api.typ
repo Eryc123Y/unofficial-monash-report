@@ -27,6 +27,7 @@
   title: 42, author: 42, student-id: 42, unit: 42, semester: 42, date: "today",
   short-title: 42, info: false, logo: "logo.svg", font: 42, heading-font: (42,),
   math-font: false, code-font: (), font-size: -1, accent: "blue", paper: 42, lang: 42,
+  labels: false, show-marks: "yes", question-box: "yes",
   tutor: 42, subtitle: 42, doc-type: 42, authors: 42, supervisor: 42,
   word-count: -1, faculty: 42, abstract: 42, keywords: (42,), outline: "yes",
 )
@@ -38,6 +39,8 @@
     else if bad == "relative-size" { opts.insert("font-size", invalid-relative-size) }
     else if bad == "bad-paper" { opts.insert("paper", "not-a-paper") }
     else if bad == "info-item" { opts.insert("info", (42,)) }
+    else if bad == "label-key" { opts.insert("labels", (unexpected: "Invalid")) }
+    else if bad == "label-value" { opts.insert("labels", (question: 42)) }
     else if bad == "author-key" { opts.insert("authors", ((name: [Author], extra: [Invalid]),)) }
     else { opts.insert(bad, invalid.at(bad)) }
     dictionary(package).at(mode)(..opts, [])
