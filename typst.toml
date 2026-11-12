@@ -2,7 +2,7 @@
 name = "unofficial-monash-report"
 version = "0.1.0"
 entrypoint = "lib.typ"
-authors = ["@Eryc123Y"]
+authors = ["EY2234 <@Eryc123Y>"]
 license = "MIT"
 description = "Monash-inspired academic assignments and STEM reports."
 keywords = ["monash", "academic", "assignment", "report", "STEM"]

@@ -2,6 +2,7 @@
 #let manifest = toml("../typst.toml")
 #assert.eq(manifest.package.name, "unofficial-monash-report")
 #assert.eq(manifest.package.version, "0.1.0")
+#assert.eq(manifest.package.authors, ("EY2234 <@Eryc123Y>",))
 #assert.eq(manifest.package.compiler, "0.15.0")
 #assert.eq(manifest.package.entrypoint, "lib.typ")
 #assert.eq(manifest.package.license, "MIT")
