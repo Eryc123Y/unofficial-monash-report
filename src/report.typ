@@ -5,6 +5,7 @@
 #import "cover.typ": cover
 #import "frontmatter.typ": frontmatter
 #let report(body, ..args) = {
+  require("arguments", args.pos().len() == 0, "named options after the body")
   require("body", type(body) == content, "content")
   let o = validate("report", args.named()) + (mode: "report")
   document-style(o, [
@@ -21,6 +22,7 @@
   ])
 }
 #let appendix(body) = context {
+  require("body", type(body) in (str, content), "str or content")
   require("appendix", current-config().mode == "report", "used inside report")
   set heading(numbering: "A.1")
   counter(heading).update(0)

@@ -15,14 +15,15 @@
 #let show-question(it) = context {
   let o = current-config()
   set align(left)
+  set text(top-edge: body-top-edge, bottom-edge: body-bottom-edge)
   let data = it.body.value
-  block(above: question-above, below: question-gap, sticky: true,
+  block(above: question-above, below: question-heading-gap, sticky: true,
     grid(columns: (1fr, auto),
-      text(font: o.heading-font, size: section-size, weight: "bold", fill: o.accent)[
+      text(top-edge: body-top-edge, bottom-edge: zero, font: o.heading-font, size: section-size, weight: "bold", fill: o.accent)[
         Question #counter(figure.where(kind: "question")).display(it.numbering)#if present(data.title) { [: #data.title] }
       ],
       if present(data.marks) { text(size: label-size, style: "italic", fill: monash-grey-dark)[#data.marks#if type(data.marks) in (int, float) { [ marks] }] }))
   if present(data.statement) {
-    block(width: full, breakable: true, fill: monash-grey-light, inset: box-inset, above: zero, below: question-gap, data.statement)
+    block(width: full, breakable: true, fill: monash-grey-light, inset: box-inset, above: zero, below: question-gap, pad(bottom: line-tail-space, data.statement))
   }
 }

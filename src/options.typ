@@ -53,6 +53,7 @@
       require("authors.name", person.at("name", default: none) != none, "str or content")
     }
   }
+  if type(o.date) == datetime { require("date", o.date.year() != none, "a datetime with a calendar date") }
   if o.date == auto { o.date = datetime.today() }
   if o.short-title == auto {
     let unit = plain(o.unit).split(" ").first()

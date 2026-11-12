@@ -9,7 +9,7 @@
   ) } else { value }
 }
 #let furniture(o, left-text, right-text, top-rule: false) = {
-  set text(font: o.heading-font, size: furniture-size, fill: monash-grey)
+  set text(top-edge: compact-top-edge, bottom-edge: zero, font: o.heading-font, size: furniture-size, fill: monash-grey)
   set par(justify: false, leading: zero)
   let row = grid(columns: (1fr, 1fr), column-gutter: furniture-gap,
     align(left, left-text), align(right, right-text))
@@ -25,7 +25,8 @@
   } else {
     let headings = query(heading.where(level: 1)).filter(item => item.location().page() <= here().page())
     let current = if headings.len() > 0 {
-      let item = headings.last()
+      let on-page = headings.filter(item => item.location().page() == here().page())
+      let item = if on-page.len() > 0 { on-page.first() } else { headings.last() }
       [#if item.numbering != none { numbering(item.numbering, ..counter(heading).at(item.location())); h(number-gap) }#item.body]
     }
     furniture(o, current, o.title)
