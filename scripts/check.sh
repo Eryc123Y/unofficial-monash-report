@@ -1,0 +1,129 @@
+#!/usr/bin/env bash
+# Compile all documents through a temporary package path; every warning fails.
+# Usage: scripts/check.sh [--ignore-system-fonts] [--thumbnail]
+set -euo pipefail
+cd "$(dirname "$0")/.."
+font_flags=()
+thumbnail=false
+for arg in "$@"; do
+  case "$arg" in
+    --ignore-system-fonts) font_flags+=(--ignore-system-fonts) ;;
+    --thumbnail) thumbnail=true ;;
+    *) echo "unknown argument: $arg" >&2; exit 2 ;;
+  esac
+done
+package_path="$(mktemp -d)"
+trap 'rm -rf "$package_path"' EXIT
+package_version="$(sed -n 's/^version = "\(.*\)"/\1/p' typst.toml)"
+mkdir -p "$package_path/preview/unofficial-monash-report"
+ln -s "$PWD" "$package_path/preview/unofficial-monash-report/$package_version"
+export TYPST_PACKAGE_PATH="$package_path"
+mkdir -p build
+# Typst cannot enumerate fonts inside a document. Supply the actual font list,
+# so unavailable fallback families are never passed to text(). No warning filters.
+fonts="$(typst fonts ${font_flags[@]+"${font_flags[@]}"} | tr '\n' '|')"
+failures=0
+compile() {
+  local input="$1" output="$2" log
+  shift 2
+  if ! log="$(typst compile --root . ${font_flags[@]+"${font_flags[@]}"} --input "monash-fonts=$fonts" "$@" "$input" "$output" 2>&1)"; then
+    echo "FAIL  $input $*"
+    echo "$log"
+    failures=$((failures + 1))
+  elif [[ -n "$log" ]]; then
+    echo "FAIL  diagnostics from $input $*"
+    echo "$log"
+    failures=$((failures + 1))
+  else
+    echo "ok    $input $*"
+  fi
+}
+while IFS= read -r file; do
+  compile "$file" "build/${file//\//-}.pdf"
+done < <(find tests examples template -type f -name '*.typ' | sort)
+for field in subtitle unit doc-type author student-id supervisor date word-count faculty semester info authors; do
+  compile tests/cover-fields.typ "build/cover-$field.pdf" --input "field=$field"
+done
+for file in no-logo logo stress numbering; do
+  compile "tests/$file.typ" "build/$file-report.pdf" --input mode=report
+done
+# Negative cases are expected failures. Require a panic naming the bad argument.
+negative() {
+  local mode="$1" bad="$2" expected="$3" log
+  if log="$(typst compile --root . ${font_flags[@]+"${font_flags[@]}"} --input "monash-fonts=$fonts" --input "mode=$mode" --input "bad=$bad" tests/api.typ build/invalid.pdf 2>&1)"; then
+    echo "FAIL  $mode.$bad did not panic"
+    failures=$((failures + 1))
+  elif [[ "$log" == *"panicked with:"* && "$log" == *"\`$expected\`"* ]]; then
+    echo "ok    rejects $mode.$bad"
+  else
+    echo "FAIL  $mode.$bad must panic naming $expected"
+    echo "$log"
+    failures=$((failures + 1))
+  fi
+}
+for mode in assignment report; do
+  for arg in title author student-id unit semester date short-title info logo font heading-font math-font code-font font-size accent paper lang; do
+    negative "$mode" "$arg" "$arg"
+  done
+  negative "$mode" unknown unknown-argument
+  negative "$mode" missing-title title
+  negative "$mode" relative-size font-size
+  negative "$mode" bad-paper paper
+  negative "$mode" info-item info
+done
+negative assignment tutor tutor
+for arg in subtitle doc-type authors supervisor word-count faculty abstract keywords outline; do
+  negative report "$arg" "$arg"
+done
+negative report author-key authors.extra
+for arg in marks title number body unknown; do negative question "$arg" "$arg"; done
+for kind in theorem lemma proposition corollary definition example remark proof; do negative "$kind" unknown unknown; done
+negative appendix mode appendix
+# README examples are standalone documents; the logo example gets a neutral asset.
+if [[ -f README.md ]]; then
+  mkdir -p build/readme/assets
+  cp tests/assets/placeholder.svg build/readme/assets/logo.svg
+  awk '/^```typst$/ {n++; in_code=1; next} /^```$/ {in_code=0} in_code {print > ("build/readme/sample-" n ".typ")}' README.md
+  for file in build/readme/sample-*.typ; do
+    [[ -e "$file" ]] && compile "$file" "${file%.typ}.pdf"
+  done
+fi
+# Copy only shippable files, so init cannot accidentally use excluded sources.
+ship_dir="$package_path/isolated/preview/unofficial-monash-report/$package_version"
+mkdir -p "$ship_dir"
+cp typst.toml lib.typ LICENSE README.md CHANGELOG.md thumbnail.png "$ship_dir/"
+cp -R src template "$ship_dir/"
+export TYPST_PACKAGE_PATH="$package_path/isolated"
+# Check that a completely fresh typst init works from the isolated bundle.
+init_dir="build/fresh-init"
+rm -rf "$init_dir"
+if ! typst init "@preview/unofficial-monash-report:$package_version" "$init_dir"; then
+  failures=$((failures + 1))
+else
+  compile "$init_dir/main.typ" build/fresh-init.pdf
+fi
+if [[ "$failures" -gt 0 ]]; then echo "$failures check(s) failed"; exit 1; fi
+if [[ "$thumbnail" == true ]]; then
+  mkdir -p build/preview docs/preview
+  compile examples/assignment.typ 'build/preview/assignment-{p}.png' --ppi 96
+  compile examples/report.typ 'build/preview/report-{p}.png' --ppi 96
+  [[ "$failures" -eq 0 ]] || exit 1
+  cp build/preview/assignment-1.png docs/preview/assignment.png
+  cp build/preview/report-1.png docs/preview/report-cover.png
+  cp build/preview/report-5.png docs/preview/report-body.png
+  compile template/main.typ build/preview/thumbnail.png --pages 1 --ppi 100
+  [[ "$failures" -eq 0 ]] || exit 1
+  cp build/preview/thumbnail.png thumbnail.png
+  echo "Regenerated thumbnail.png and docs/preview/*.png"
+fi
+# Local, reproducible package-shape checks (no network submission).
+[[ "$(wc -c < thumbnail.png)" -le 3145728 ]] || { echo 'FAIL thumbnail size'; exit 1; }
+read -r thumb_width thumb_height <<<"$(file thumbnail.png | sed -nE 's/.*PNG image data, ([0-9]+) x ([0-9]+).*/\1 \2/p')"
+[[ "$thumb_width" -ge 1080 || "$thumb_height" -ge 1080 ]] || { echo 'FAIL thumbnail dimensions'; exit 1; }
+for file in src/*.typ; do
+  [[ "$(wc -l < "$file")" -lt 300 ]] || { echo "FAIL $file exceeds line limit"; exit 1; }
+done
+if rg -n '^#[^i]|^[^#/[:space:]]' lib.typ; then echo 'FAIL lib.typ must only re-export imports'; exit 1; fi
+cp thumbnail.png "$ship_dir/"
+tar -czf "build/unofficial-monash-report-$package_version.tar.gz" -C "$ship_dir" .
+echo "All checks passed ($(typst --version))"

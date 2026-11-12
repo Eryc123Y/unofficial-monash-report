@@ -1,0 +1,17 @@
+name: Check
+on:
+  push:
+  pull_request:
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        font-flags: ["", "--ignore-system-fonts"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: typst-community/setup-typst@v5
+        with:
+          typst-version: "0.15.1"
+      - name: Compile every document without warnings
+        run: scripts/check.sh ${{ matrix.font-flags }}
