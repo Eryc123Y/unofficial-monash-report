@@ -15,10 +15,11 @@
 #let cover(o) = {
   let fields = ()
   if o.authors.len() == 0 {
-    fields += (("Author", o.author), ("Student ID", o.student-id))
+    fields += ((o.labels.author, o.author), (o.labels.student-id, o.student-id))
   }
   fields += (
-    ("Supervisor", o.supervisor), ("Date", date-text(o.date)), ("Word count", o.word-count),
+    (o.labels.supervisor, o.supervisor), (o.labels.date, date-text(o.date)),
+    (o.labels.word-count, o.word-count),
   )
   fields += o.info
   fields = fields.filter(pair => present(pair.last()))
@@ -32,10 +33,11 @@
         cells += (person.name, person.at("student-id", default: []))
         if contributions { cells.push(person.at("contribution", default: [])) }
       }
-      let headers = ("Author", "Student ID", if contributions { "Contribution" })
+      let headers = (o.labels.author, o.labels.student-id)
+      if contributions { headers.push(o.labels.contribution) }
       table(
         align: left, columns: if contributions { (1fr, 1fr, 1fr) } else { (1fr, 1fr) },
-        table.header(..headers.filter(present).map(emph)),
+        table.header(..headers.map(emph)),
         ..cells,
       )
       if fields.len() > 0 { v(group-gap) }

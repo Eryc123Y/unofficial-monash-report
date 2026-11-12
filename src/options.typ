@@ -1,8 +1,10 @@
 #import "design.typ": *
+#import "labels.typ": resolve-labels
 #let common = (
   title: none, author: none, student-id: none, unit: none, semester: none,
-  date: auto, short-title: auto, info: (), logo: none,
+  date: none, short-title: auto, info: (), logo: none,
   font: auto, heading-font: auto, math-font: auto, code-font: auto,
+  labels: (:), show-marks: true, question-box: true,
   font-size: body-size, accent: monash-blue, paper: "a4", lang: "en",
 )
 #let defaults(mode) = common + if mode == "assignment" {
@@ -10,7 +12,7 @@
 } else {
   (
     subtitle: none, doc-type: none, authors: (), supervisor: none, word-count: none,
-    faculty: none, abstract: none, keywords: (), outline: true,
+    faculty: none, abstract: none, keywords: (), outline: false,
   )
 }
 #let valid-text(value) = value == none or type(value) in (str, content)
@@ -36,6 +38,10 @@
     if key not in base { panic("unknown argument `" + key + "`") }
   }
   let o = base + args
+  o.labels = resolve-labels(o.labels)
+  for key in ("show-marks", "question-box") {
+    require(key, type(o.at(key)) == bool, "bool")
+  }
   require("title", o.title != none and valid-text(o.title), "str or content (required)")
   for key in (
     "author", "student-id", "unit", "semester", "tutor", "subtitle", "doc-type",

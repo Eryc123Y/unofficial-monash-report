@@ -1,7 +1,7 @@
 #import "@preview/unofficial-monash-report:0.1.0": *
 #import "../src/design.typ": diagram-width, diagram-height, schematic-svg
 
-#show: report.with(
+#show: report.with(outline: true,
   logo: image("../tests/assets/placeholder.svg"),
   title: [Heuristic Search for Warehouse Robot Routing],
   subtitle: [A comparison of A\*, weighted A\* and jump point search on grid maps],

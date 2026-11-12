@@ -1,6 +1,7 @@
 #import "design.typ": *
 #import "options.typ": require, valid-text, present
 #import "page.typ": current-config
+#import "labels.typ": labelled
 #let chapter-number-at(location) = {
   let hs = query(heading.where(level: 1).before(location, inclusive: true))
   if hs.len() == 0 { "0" } else {
@@ -20,20 +21,20 @@
   let title = if items.len() == 2 { items.first() }
   figure(
     metadata((title: title, statement: items.last(), kind: kind)),
-    kind: "theorem", supplement: kind,
+    kind: "theorem", supplement: _ => context current-config().labels.at(kind),
     numbering: n => context {
       let o = current-config()
       if o.mode == "report" { chapter-number() + "." + str(n) } else { str(n) }
     },
   )
 }
-#let theorem = statement.with("Theorem")
-#let lemma = statement.with("Lemma")
-#let proposition = statement.with("Proposition")
-#let corollary = statement.with("Corollary")
-#let definition = statement.with("Definition")
-#let example = statement.with("Example")
-#let remark = statement.with("Remark")
+#let theorem = statement.with("theorem")
+#let lemma = statement.with("lemma")
+#let proposition = statement.with("proposition")
+#let corollary = statement.with("corollary")
+#let definition = statement.with("definition")
+#let example = statement.with("example")
+#let remark = statement.with("remark")
 #let show-statement(it) = context {
   let o = current-config()
   set align(left)
@@ -43,8 +44,8 @@
   let title = if present(data.title) { [ (#data.title)] }
   block(breakable: true, above: paragraph-gap, below: paragraph-gap)[
     #text(font: o.heading-font, size: label-size, weight: "bold", fill: o.accent)[
-      #data.kind #number]#title.
-    #if data.kind in ("Theorem", "Lemma", "Proposition", "Corollary") {
+      #labelled(o.labels.at(data.kind), number, separator: [ ])]#title.
+    #if data.kind in ("theorem", "lemma", "proposition", "corollary") {
       emph(data.statement)
     } else { data.statement }
   ]
@@ -53,16 +54,20 @@
   require("body", args.pos().len() == 0, "one body")
   for key in args.named().keys() { panic("unknown argument `" + key + "`") }
   require("body", type(body) in (str, content), "str or content")
-  let children = if body.has("children") { body.children } else { (body,) }
-  while children.len() > 0 and children.last() in ([ ], parbreak()) { children.pop() }
-  let last = children.at(-1, default: none)
-  if type(last) == content and last.func() == math.equation and last.block {
-    block(breakable: true)[
-      #emph[Proof.] #children.slice(0, -1).join()
-      #v(proof-equation-gap)
-      #grid(columns: (1fr, auto), align: horizon, last, [□])
-    ]
-  } else {
-    block(breakable: true)[#emph[Proof.] #body #h(1fr)□]
+  context {
+    let o = current-config()
+    let prefix = if present(o.labels.proof) { [#emph[#o.labels.proof.] ] }
+    let children = if body.has("children") { body.children } else { (body,) }
+    while children.len() > 0 and children.last() in ([ ], parbreak()) { children.pop() }
+    let last = children.at(-1, default: none)
+    if type(last) == content and last.func() == math.equation and last.block {
+      block(breakable: true)[
+        #prefix#children.slice(0, -1).join()
+        #v(proof-equation-gap)
+        #grid(columns: (1fr, auto), align: horizon, last, [□])
+      ]
+    } else {
+      block(breakable: true)[#prefix#body #h(1fr)□]
+    }
   }
 }

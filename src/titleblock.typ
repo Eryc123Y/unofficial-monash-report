@@ -1,5 +1,6 @@
 #import "design.typ": *
 #import "options.typ": present, date-text
+#import "labels.typ": labelled
 #let titleblock(o) = {
   set text(top-edge: compact-top-edge, bottom-edge: zero)
   set par(justify: false, leading: title-leading)
@@ -7,7 +8,7 @@
   let items = ()
   if present(o.author) { items.push(text(weight: "bold", fill: monash-black, o.author)) }
   if present(o.student-id) { items.push(o.student-id) }
-  if present(o.tutor) { items.push([Tutor: #o.tutor]) }
+  if present(o.tutor) { items.push(labelled(o.labels.tutor, o.tutor)) }
   if present(o.date) { items.push(date-text(o.date)) }
   items += o.info.filter(present)
   if present(o.logo) or present(o.unit) or present(o.semester) {

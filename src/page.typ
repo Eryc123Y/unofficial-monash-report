@@ -1,11 +1,13 @@
 #import "design.typ": *
 #import "options.typ": present
+#import "labels.typ": default-labels
 #let config = state("unofficial-monash-report-config", none)
 #let current-config() = {
   let value = config.get()
   if value == none {
     (
       mode: "assignment", accent: monash-blue,
+      labels: default-labels, show-marks: true, question-box: true,
       heading-font: resolve-font(auto, heading-fonts),
     )
   } else { value }

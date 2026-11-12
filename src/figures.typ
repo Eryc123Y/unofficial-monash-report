@@ -66,7 +66,7 @@
       it,
     )
   }
-  show figure.where(kind: raw): set figure(supplement: [Listing])
+  show figure.where(kind: raw): set figure(supplement: o.labels.listing)
   show figure.where(kind: raw): it => { v(code-figure-above); it }
   show figure.caption: it => context {
     set align(center)
@@ -92,7 +92,11 @@
     )
     if it.form == "normal" and targets.len() == 1 and ours {
       let supplement = if it.supplement == auto {
-        target.supplement
+        if target.func() == figure and target.kind == "question" {
+          o.labels.question
+        } else if target.func() == figure and target.kind == "theorem" {
+          o.labels.at(target.body.value.kind)
+        } else { target.supplement }
       } else if type(it.supplement) == function {
         it.supplement(target)
       } else { it.supplement }

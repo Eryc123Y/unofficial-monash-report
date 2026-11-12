@@ -4,13 +4,23 @@
   if present(o.abstract) or o.keywords.len() > 0 {
     pad(x: abstract-inset)[
       #if present(o.abstract) {
-        align(center, text(
-          font: o.heading-font, size: label-size, weight: "bold", fill: o.accent,
-        )[Abstract])
-        v(abstract-gap)
+        if present(o.labels.abstract) {
+          align(center, text(
+            font: o.heading-font, size: label-size, weight: "bold", fill: o.accent,
+            o.labels.abstract,
+          ))
+          v(abstract-gap)
+        }
         o.abstract
       }
-      #if o.keywords.len() > 0 { parbreak(); strong[Keywords:]; [ ]; o.keywords.join(", ") }
+      #if o.keywords.len() > 0 {
+        if present(o.abstract) { parbreak() }
+        if present(o.labels.keywords) {
+          strong[#o.labels.keywords:]
+          [ ]
+          o.keywords.join(", ")
+        } else { o.keywords.join(", ") }
+      }
     ]
   }
   if o.outline {
@@ -39,6 +49,6 @@
         }),
       )
     }
-    outline(title: [Contents], depth: 2, indent: zero)
+    outline(title: if present(o.labels.contents) { o.labels.contents }, depth: 2, indent: zero)
   }
 }
