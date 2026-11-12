@@ -5,6 +5,7 @@ entrypoint = "lib.typ"
 authors = ["EY2234 <@Eryc123Y>"]
 license = "MIT"
 description = "Monash-inspired academic assignments and STEM reports."
+repository = "https://github.com/Eryc123Y/unofficial-monash-report"
 keywords = ["monash", "academic", "assignment", "report", "STEM"]
 categories = ["report"]
 compiler = "0.15.0"
