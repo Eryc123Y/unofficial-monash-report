@@ -82,7 +82,7 @@ wrongly typed arguments fail with a clear `panic` message that names the argumen
   unit: "FIT3080 Artificial Intelligence",  // shown top right, line 1
   semester: "Semester 2, 2026",             // shown top right, line 2
   tutor: "Name",
-  date: datetime.today(),                   // datetime, content, or none
+  date: none,                               // datetime, content, or none
   short-title: auto,                        // running head and footer text;
                                             // auto = unit code + title before ":"
   info: (),                                 // extra byline items: array of content
@@ -92,6 +92,9 @@ wrongly typed arguments fail with a clear `panic` message that names the argumen
   accent: monash-blue,
   paper: "a4",
   lang: "en",
+  labels: (:),                              // partial str/content wording overrides
+  show-marks: true,                         // false hides every question's marks
+  question-box: true,                       // false = plain statement, no fill or inset
 )
 ```
 
@@ -109,14 +112,15 @@ wrongly typed arguments fail with a clear `panic` message that names the argumen
                                                 // a non-empty `authors` replaces
                                                 // author/student-id with a table
   supervisor: none,
-  date: datetime.today(),
+  date: none,
   word-count: none,
   faculty: none, semester: none,                // top right of the cover
   info: (),                                     // extra rows: array of (label, value)
   logo: none,
   abstract: none, keywords: (),
-  outline: true,                                // contents page
+  outline: false,                               // true opts into contents
   short-title: auto,
+  labels: (:), show-marks: true, question-box: true,
   // font, heading-font, math-font, code-font, font-size, accent, paper, lang
   // as in `assignment`
 )
@@ -125,9 +129,12 @@ wrongly typed arguments fail with a clear `panic` message that names the argumen
 ### 3.3 Components (work in both modes)
 
 - `question(marks: none, title: none, number: auto)[statement]` prints
-  "Question N", the marks on the right, and the statement in a light grey box.
+  the configured question label and number, optional marks on the right, and
+  the statement. `show-marks: false` hides all marks. Numeric 1 uses `labels.mark`;
+  other numbers use `labels.marks`. Strings and content print as supplied.
+  `question-box: false` gives plain text without fill, inset or box padding.
   It steps a counter; `number` overrides it. With no body it prints the heading
-  only. It is referenceable (`@q-label` gives "Question 2").
+  only. It is referenceable (`@q-label` uses the configured label, for example "Problem 2").
 - Parts of an answer are an ordinary Typst enum. Inside a document from this
   package the first enum level is numbered `(a)`, `(b)` and the second `(i)`,
   `(ii)`.
@@ -137,9 +144,40 @@ wrongly typed arguments fail with a clear `panic` message that names the argumen
 - `proof[...]` ends with a right-aligned `□`, also when the body ends in a
   display equation.
 - `appendix(body)` switches level-1 numbering to `A`, `B`, ... (report only).
+- Exported font dictionary: `monash-fonts`, with `font`, `heading-font`,
+  `math-font` and `code-font` preference stacks for explicit opt-in.
 - Exported design tokens: `monash-blue` and the greys in section 4.1.
 
 `lib.typ` exports exactly these names. `tests/api.typ` checks each one resolves.
+
+### 3.4 Wording and optional output
+
+Both modes accept `labels: (:)`, merged over the defaults below. Each value
+must be `str` or `content`. Only supplied keys change. Unknown keys panic with
+`labels.<key>` in the message; wrong value types also name the key. Empty
+strings/content hide a label without leaving its punctuation or separator.
+Question, listing and theorem-like reference supplements use the same labels.
+Native figure/table/equation supplements and bibliography titles remain
+customisable through their native arguments.
+
+```typst
+labels: (
+  question: "Question", marks: "marks", mark: "mark", tutor: "Tutor",
+  author: "Author", student-id: "Student ID", contribution: "Contribution",
+  supervisor: "Supervisor", date: "Date", word-count: "Word count",
+  abstract: "Abstract", keywords: "Keywords", contents: "Contents", proof: "Proof",
+  listing: "Listing", theorem: "Theorem", lemma: "Lemma", proposition: "Proposition",
+  corollary: "Corollary", definition: "Definition", example: "Example", remark: "Remark",
+)
+```
+
+`show-marks` and `question-box` must be booleans and default to `true` in both
+modes. Everything except `title` is optional and prints nothing when unset.
+Dates now default to `none` and contents to `false`; request them explicitly
+with `date: datetime.today()` and `outline: true`. Empty arrays suppress
+keywords and group-author rows. Omission must remove associated gaps, labels
+and separators, including metadata rows and front-matter pages. The tests must
+assert rendered output and positions rather than merely exercise compilation.
 
 ## 4. Design specification
 
@@ -147,13 +185,13 @@ wrongly typed arguments fail with a clear `panic` message that names the argumen
 
 | Token | Hex | Use |
 |---|---|---|
-| `monash-blue` | `#006CAB` | titles, numbers, labels, links, cover band, code keywords |
-| `monash-black` | `#231F20` | body text, table rules |
-| `monash-grey-dark` | `#423F40` | secondary text (marks, byline) |
-| `monash-grey` | `#666768` | running head and footer text, line numbers |
-| `monash-grey-mid` | `#939598` | hairlines |
-| `monash-grey-soft` | `#D1D3D4` | reserved |
-| `monash-grey-light` | `#EEF1F2` | question box fill |
+| `monash-blue` | `#006DAE` | titles, numbers, labels, links, cover band, code keywords |
+| `monash-black` | `#000000` | body text, table rules |
+| `monash-grey-dark` | `#5A5A5A` | secondary text (marks, byline) |
+| `monash-grey` | `#5A5A5A` | running head and footer text, line numbers |
+| `monash-grey-mid` | `#969696` | hairlines |
+| `monash-grey-soft` | `#E6E6E6` | reserved |
+| `monash-grey-light` | `#E6E6E6` | question box fill |
 
 `accent` replaces `monash-blue` everywhere. No other colours.
 
