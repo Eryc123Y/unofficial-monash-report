@@ -1,11 +1,11 @@
 // All visual constants live here. Values from the mock use 1 CSS px = .75pt.
-#let monash-blue = rgb("006CAB")
-#let monash-black = rgb("231F20")
-#let monash-grey-dark = rgb("423F40")
-#let monash-grey = rgb("666768")
-#let monash-grey-mid = rgb("939598")
-#let monash-grey-soft = rgb("D1D3D4")
-#let monash-grey-light = rgb("EEF1F2")
+#let monash-blue = rgb("006DAE")
+#let monash-black = rgb("000000")
+#let monash-grey-dark = rgb("5A5A5A")
+#let monash-grey = rgb("5A5A5A")
+#let monash-grey-mid = rgb("969696")
+#let monash-grey-soft = rgb("E6E6E6")
+#let monash-grey-light = rgb("E6E6E6")
 #let body-fonts = ("STIX Two Text", "Libertinus Serif")
 #let math-fonts = ("STIX Two Math", "New Computer Modern Math")
 #let heading-fonts = ("Helvetica Neue", "Helvetica", "Arial", "Liberation Sans", "Libertinus Serif")
@@ -170,11 +170,11 @@
 ```xml
 <svg xmlns="http://www.w3.org/2000/svg" width="430" height="168" viewBox="0 0 430 168">
 <title>Schematic nodes expanded against map size</title>
-<path d="M48 12V136H330" fill="none" stroke="#231F20" stroke-width="1"/>
-<path d="M48 132C140 120 230 80 322 18" fill="none" stroke="#231F20" stroke-width="1.5"
+<path d="M48 12V136H330" fill="none" stroke="#000000" stroke-width="1"/>
+<path d="M48 132C140 120 230 80 322 18" fill="none" stroke="#000000" stroke-width="1.5"
   stroke-dasharray="6 4"/>
-<path d="M48 134C150 130 240 116 322 92" fill="none" stroke="#006CAB" stroke-width="2"/>
-<g font-family="STIX Two Text,Libertinus Serif,serif" font-size="13" fill="#231F20">
+<path d="M48 134C150 130 240 116 322 92" fill="none" stroke="#006DAE" stroke-width="2"/>
+<g font-family="STIX Two Text,Libertinus Serif,serif" font-size="13" fill="#000000">
 <text x="334" y="22">Zero heuristic</text><text x="334" y="96">Manhattan</text>
 <text x="189" y="160" text-anchor="middle">Map size</text>
 <text x="18" y="78" text-anchor="middle" transform="rotate(-90 18 78)">Nodes expanded</text>

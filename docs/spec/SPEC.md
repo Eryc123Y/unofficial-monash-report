@@ -185,13 +185,13 @@ assert rendered output and positions rather than merely exercise compilation.
 
 | Token | Hex | Use |
 |---|---|---|
-| `monash-blue` | `#006CAB` | titles, numbers, labels, links, cover band, code keywords |
-| `monash-black` | `#231F20` | body text, table rules |
-| `monash-grey-dark` | `#423F40` | secondary text (marks, byline) |
-| `monash-grey` | `#666768` | running head and footer text, line numbers |
-| `monash-grey-mid` | `#939598` | hairlines |
-| `monash-grey-soft` | `#D1D3D4` | reserved |
-| `monash-grey-light` | `#EEF1F2` | question box fill |
+| `monash-blue` | `#006DAE` | titles, numbers, labels, links, cover band, code keywords |
+| `monash-black` | `#000000` | body text, table rules |
+| `monash-grey-dark` | `#5A5A5A` | secondary text (marks, byline) |
+| `monash-grey` | `#5A5A5A` | running head and footer text, line numbers |
+| `monash-grey-mid` | `#969696` | hairlines |
+| `monash-grey-soft` | `#E6E6E6` | reserved |
+| `monash-grey-light` | `#E6E6E6` | question box fill |
 
 `accent` replaces `monash-blue` everywhere. No other colours.
 
