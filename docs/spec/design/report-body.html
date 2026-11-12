@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Report body page</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+body{margin:0}
+a{color:#006CAB}a:hover{color:#231F20}
+</style>
+</helmet>
+<div style="width: 794px; height: 1123px; box-sizing: border-box; position: relative; background: #FFFFFF; color: #231F20; font-family: 'STIX Two Text', 'Times New Roman', serif; font-size: 15px; line-height: 1.5; padding: 48px 94px 0 94px">
+
+<header style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid #939598; padding-bottom: 8px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 12px; color: #666768">
+<span>2&nbsp;&nbsp;Background</span>
+<span>Heuristic Search for Warehouse Robot Routing</span>
+</header>
+
+<section style="display: flex; flex-direction: column; gap: 13px; margin-top: 32px">
+<h1 style="margin: 0 0 4px 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 28px; line-height: 1.15; font-weight: 300; color: #006CAB; display: flex; gap: 16px"><span>2</span><span>Background</span></h1>
+
+<p style="margin: 0; text-align: justify; hyphens: auto; text-wrap: pretty">A route-planning problem is a graph whose nodes are robot positions and whose edges are single moves with non-negative cost. A search algorithm is <i>optimal</i> if the first path it returns to the goal is a cheapest one. This section fixes the notation used in the rest of the report.</p>
+
+<h2 style="margin: 10px 0 0 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 17px; line-height: 1.25; font-weight: 700; display: flex; gap: 12px"><span style="color: #006CAB">2.1</span><span>Best-first search</span></h2>
+
+<p style="margin: 0; text-align: justify; hyphens: auto; text-wrap: pretty">Best-first search keeps a frontier of discovered nodes and always expands the one with the smallest evaluation <i>f</i>(<i>n</i>). A* uses the cost so far plus an estimate of the cost to go <a href="#ref-1" style="text-decoration: none">[1]</a>:</p>
+
+<div style="display: flex; align-items: baseline; justify-content: space-between">
+<span style="width: 40px"></span>
+<span style="font-size: 16px"><i>f</i>(<i>n</i>) = <i>g</i>(<i>n</i>) + <i>h</i>(<i>n</i>).</span>
+<span style="width: 40px; text-align: right">(2.1)</span>
+</div>
+
+<p style="margin: 0; text-align: justify; hyphens: auto; text-wrap: pretty"><span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 700; color: #006CAB">Definition 2.1</span> (Admissible heuristic). A heuristic <i>h</i> is <i>admissible</i> if <i>h</i>(<i>n</i>) ≤ <i>h</i>*(<i>n</i>) for every node <i>n</i>, where <i>h</i>*(<i>n</i>) is the cost of a cheapest path from <i>n</i> to a goal.</p>
+
+<p style="margin: 0; text-align: justify; hyphens: auto; text-wrap: pretty">With an admissible heuristic A* is optimal, and a better-informed heuristic expands fewer nodes.<sup style="font-size: 11px; line-height: 0">1</sup> <a href="#fig-2-1" style="text-decoration: none">Figure 2.1</a> sketches the effect as the map grows.</p>
+
+<figure id="fig-2-1" style="margin: 6px 0 0 0; display: flex; flex-direction: column; align-items: center; gap: 8px">
+<svg role="img" aria-label="Schematic line chart: nodes expanded against map size, the zero heuristic rising faster than the Manhattan heuristic" width="430" height="168" viewBox="0 0 430 168">
+<line x1="48" y1="12" x2="48" y2="136" stroke="#231F20" stroke-width="1"></line>
+<line x1="48" y1="136" x2="330" y2="136" stroke="#231F20" stroke-width="1"></line>
+<path d="M48 132 C 140 120, 230 80, 322 18" fill="none" stroke="#231F20" stroke-width="1.5" stroke-dasharray="6 4"></path>
+<path d="M48 134 C 150 130, 240 116, 322 92" fill="none" stroke="#006CAB" stroke-width="2"></path>
+<text x="334" y="22" font-family="STIX Two Text, Times New Roman, serif" font-size="13" fill="#231F20">Zero heuristic</text>
+<text x="334" y="96" font-family="STIX Two Text, Times New Roman, serif" font-size="13" fill="#231F20">Manhattan</text>
+<text x="189" y="160" text-anchor="middle" font-family="STIX Two Text, Times New Roman, serif" font-size="13" fill="#231F20">Map size</text>
+<text x="18" y="78" text-anchor="middle" transform="rotate(-90 18 78)" font-family="STIX Two Text, Times New Roman, serif" font-size="13" fill="#231F20">Nodes expanded</text>
+</svg>
+<figcaption style="font-size: 13.5px; text-align: center"><span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 700; color: #006CAB">Figure 2.1.</span> Nodes expanded as the map grows (schematic).</figcaption>
+</figure>
+
+<h2 style="margin: 10px 0 0 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 17px; line-height: 1.25; font-weight: 700; display: flex; gap: 12px"><span style="color: #006CAB">2.2</span><span>Admissible and consistent heuristics</span></h2>
+
+<p style="margin: 0; text-align: justify; hyphens: auto; text-wrap: pretty">Consistency is the stronger condition. It bounds how fast <i>h</i> may fall along an edge, and it lets A* close each node the first time it is expanded.</p>
+</section>
+
+<div style="position: absolute; left: 94px; right: 94px; bottom: 96px; display: flex; flex-direction: column; gap: 6px">
+<div style="width: 120px; height: 1px; background: #231F20"></div>
+<p style="margin: 0; font-size: 12.5px; line-height: 1.45"><sup style="font-size: 10px; line-height: 0">1</sup> A heuristic <i>h</i><sub style="font-size: 9px; line-height: 0">2</sub> is better informed than <i>h</i><sub style="font-size: 9px; line-height: 0">1</sub> if <i>h</i><sub style="font-size: 9px; line-height: 0">2</sub>(<i>n</i>) ≥ <i>h</i><sub style="font-size: 9px; line-height: 0">1</sub>(<i>n</i>) at every node.</p>
+</div>
+
+<footer style="position: absolute; left: 94px; right: 94px; bottom: 48px; display: flex; justify-content: space-between; align-items: baseline; border-top: 1px solid #939598; padding-top: 8px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 12px; color: #666768">
+<span>FIT3162 · Final Report</span>
+<span>3</span>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":794,"height":1123}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Assignment inner page</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=STIX+Two+Text:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+body{margin:0}
+a{color:#006CAB}a:hover{color:#231F20}
+</style>
+</helmet>
+<div style="width: 794px; height: 1123px; box-sizing: border-box; position: relative; background: #FFFFFF; color: #231F20; font-family: 'STIX Two Text', 'Times New Roman', serif; font-size: 15px; line-height: 1.5; padding: 48px 94px 0 94px">
+
+<header style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid #939598; padding-bottom: 8px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 12px; color: #666768">
+<span>FIT3080 · Assignment 2</span>
+<span>[Your Name] ([Student ID])</span>
+</header>
+
+<section style="display: flex; flex-direction: column; gap: 13px; margin-top: 28px">
+<div style="display: flex; justify-content: space-between; align-items: baseline">
+<h2 style="margin: 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 17px; line-height: 1.25; font-weight: 700; color: #006CAB">Question 2</h2>
+<span style="font-size: 14px; font-style: italic; color: #423F40">15 marks</span>
+</div>
+
+<div style="background: #EEF1F2; padding: 12px 16px">
+<p style="margin: 0; text-align: justify; hyphens: auto; text-wrap: pretty">Implement A* search on a grid with 4-connected moves, and compare the Manhattan heuristic with the zero heuristic on the three supplied maps.</p>
+</div>
+
+<p style="margin: 0; text-align: justify; hyphens: auto; text-wrap: pretty">Listing 1 gives the search loop. The frontier is a binary heap ordered by <i>f</i> = <i>g</i> + <i>h</i>, and a node is skipped when it is popped with a cost worse than the best one already recorded.</p>
+
+<figure style="margin: 0; display: flex; flex-direction: column; gap: 8px">
+<div style="border-top: 1px solid #231F20; border-bottom: 1px solid #231F20; display: flex; font-family: 'JetBrains Mono', 'DejaVu Sans Mono', monospace; font-size: 12px; line-height: 1.6">
+<pre style="margin: 0; padding: 10px 12px 10px 4px; color: #666768; text-align: right; font-family: inherit">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13</pre>
+<pre style="margin: 0; padding: 10px 0 10px 8px; font-family: inherit; color: #231F20; flex: 1; min-width: 0"><span style="color: #006CAB; font-weight: 500">def</span> astar(start, goal, h):
+    frontier = [(h(start), 0, start)]
+    best = {start: 0}
+    <span style="color: #006CAB; font-weight: 500">while</span> frontier:
+        f, g, node = heappop(frontier)
+        <span style="color: #006CAB; font-weight: 500">if</span> node == goal:
+            <span style="color: #006CAB; font-weight: 500">return</span> g
+        <span style="color: #006CAB; font-weight: 500">if</span> g &gt; best[node]:
+            <span style="color: #006CAB; font-weight: 500">continue</span>            <span style="color: #666768"># stale entry</span>
+        <span style="color: #006CAB; font-weight: 500">for</span> nxt, cost <span style="color: #006CAB; font-weight: 500">in</span> neighbours(node):
+            <span style="color: #006CAB; font-weight: 500">if</span> g + cost &lt; best.get(nxt, inf):
+                best[nxt] = g + cost
+                heappush(frontier, (g + cost + h(nxt), g + cost, nxt))</pre>
+</div>
+<figcaption style="font-size: 13.5px; text-align: center"><span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 700; color: #006CAB">Listing 1.</span> A* search with a binary-heap frontier.</figcaption>
+</figure>
+
+<p style="margin: 0; text-align: justify; hyphens: auto; text-wrap: pretty">Table 1 reports the number of nodes expanded. Both heuristics return the same path cost on every map, as Lemma 1 guarantees; the Manhattan heuristic expands far fewer nodes.</p>
+
+<table style="border-collapse: collapse; width: 80%; margin: 0 auto; font-size: 14px">
+<caption style="caption-side: top; text-align: center; padding-bottom: 8px; font-size: 13.5px"><span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 700; color: #006CAB">Table 1.</span> Nodes expanded and path cost on each map.</caption>
+<thead>
+<tr style="border-top: 1.5px solid #231F20; border-bottom: 1px solid #231F20">
+<th style="text-align: left; padding: 6px 8px 6px 4px; font-weight: 400">Map</th>
+<th style="text-align: right; padding: 6px 8px; font-weight: 400">Size</th>
+<th style="text-align: right; padding: 6px 8px; font-weight: 400">Zero heuristic</th>
+<th style="text-align: right; padding: 6px 8px; font-weight: 400">Manhattan</th>
+<th style="text-align: right; padding: 6px 4px 6px 8px; font-weight: 400">Path cost</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="padding: 5px 8px 5px 4px">[Map A]</td>
+<td style="text-align: right; padding: 5px 8px">[size]</td>
+<td style="text-align: right; padding: 5px 8px">[count]</td>
+<td style="text-align: right; padding: 5px 8px">[count]</td>
+<td style="text-align: right; padding: 5px 4px 5px 8px">[cost]</td>
+</tr>
+<tr>
+<td style="padding: 5px 8px 5px 4px">[Map B]</td>
+<td style="text-align: right; padding: 5px 8px">[size]</td>
+<td style="text-align: right; padding: 5px 8px">[count]</td>
+<td style="text-align: right; padding: 5px 8px">[count]</td>
+<td style="text-align: right; padding: 5px 4px 5px 8px">[cost]</td>
+</tr>
+<tr style="border-bottom: 1.5px solid #231F20">
+<td style="padding: 5px 8px 5px 4px">[Map C]</td>
+<td style="text-align: right; padding: 5px 8px">[size]</td>
+<td style="text-align: right; padding: 5px 8px">[count]</td>
+<td style="text-align: right; padding: 5px 8px">[count]</td>
+<td style="text-align: right; padding: 5px 4px 5px 8px">[cost]</td>
+</tr>
+</tbody>
+</table>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 13px; margin-top: 30px">
+<div style="display: flex; justify-content: space-between; align-items: baseline">
+<h2 style="margin: 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 17px; line-height: 1.25; font-weight: 700; color: #006CAB">Question 3</h2>
+<span style="font-size: 14px; font-style: italic; color: #423F40">5 marks</span>
+</div>
+<div style="background: #EEF1F2; padding: 12px 16px">
+<p style="margin: 0; text-align: justify; hyphens: auto; text-wrap: pretty">State the worst-case time complexity of A* with the zero heuristic on a graph with <i>V</i> nodes and <i>E</i> edges.</p>
+</div>
+<p style="margin: 0; text-align: justify; hyphens: auto; text-wrap: pretty">With <i>h</i> = 0 the algorithm is Dijkstra's. Each edge causes at most one push, so the heap holds at most <i>E</i> entries and every push or pop costs <i>O</i>(log <i>E</i>) = <i>O</i>(log <i>V</i>). The total is <i>O</i>((<i>V</i> + <i>E</i>) log <i>V</i>).</p>
+</section>
+
+<footer style="position: absolute; left: 94px; right: 94px; bottom: 48px; display: flex; justify-content: space-between; align-items: baseline; border-top: 1px solid #939598; padding-top: 8px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 12px; color: #666768">
+<span>FIT3080 · Assignment 2</span>
+<span>2</span>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":794,"height":1123}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Report abstract and contents</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+body{margin:0}
+a{color:#006CAB}a:hover{color:#231F20}
+</style>
+</helmet>
+<div style="width: 794px; height: 1123px; box-sizing: border-box; position: relative; background: #FFFFFF; color: #231F20; font-family: 'STIX Two Text', 'Times New Roman', serif; font-size: 15px; line-height: 1.5; padding: 104px 94px 0 94px">
+
+<section style="display: flex; flex-direction: column; gap: 10px; padding: 0 40px">
+<h2 style="margin: 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 700; color: #006CAB; text-align: center">Abstract</h2>
+<p style="margin: 0; font-size: 14.5px; text-align: justify; hyphens: auto; text-wrap: pretty">Warehouse robots plan thousands of short routes an hour, so the cost of each search matters as much as the length of the path it returns. This report compares A*, weighted A* and jump point search on grid maps of increasing size. We measure nodes expanded, running time and path cost, and we show where the weighted variant trades optimality for speed. [Summarise your main result here in one or two sentences.]</p>
+<p style="margin: 0; font-size: 14.5px"><span style="font-weight: 700">Keywords:</span> heuristic search, A*, path planning, grid maps</p>
+</section>
+
+<section style="display: flex; flex-direction: column; margin-top: 64px">
+<h1 style="margin: 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 28px; line-height: 1.15; font-weight: 300; color: #006CAB">Contents</h1>
+
+<div style="display: flex; flex-direction: column; gap: 5px; margin-top: 22px">
+
+<div style="display: flex; align-items: baseline; gap: 8px; font-weight: 700">
+<span style="width: 26px; color: #006CAB">1</span><span>Introduction</span><span style="flex: 1"></span><span>1</span>
+</div>
+<div style="display: flex; align-items: baseline; gap: 8px; padding-left: 26px">
+<span style="width: 34px">1.1</span><span>Problem statement</span><span style="flex: 1; border-bottom: 1px dotted #666768; transform: translateY(-4px)"></span><span>1</span>
+</div>
+<div style="display: flex; align-items: baseline; gap: 8px; padding-left: 26px">
+<span style="width: 34px">1.2</span><span>Contributions</span><span style="flex: 1; border-bottom: 1px dotted #666768; transform: translateY(-4px)"></span><span>2</span>
+</div>
+
+<div style="display: flex; align-items: baseline; gap: 8px; font-weight: 700; margin-top: 12px">
+<span style="width: 26px; color: #006CAB">2</span><span>Background</span><span style="flex: 1"></span><span>3</span>
+</div>
+<div style="display: flex; align-items: baseline; gap: 8px; padding-left: 26px">
+<span style="width: 34px">2.1</span><span>Best-first search</span><span style="flex: 1; border-bottom: 1px dotted #666768; transform: translateY(-4px)"></span><span>3</span>
+</div>
+<div style="display: flex; align-items: baseline; gap: 8px; padding-left: 26px">
+<span style="width: 34px">2.2</span><span>Admissible and consistent heuristics</span><span style="flex: 1; border-bottom: 1px dotted #666768; transform: translateY(-4px)"></span><span>4</span>
+</div>
+
+<div style="display: flex; align-items: baseline; gap: 8px; font-weight: 700; margin-top: 12px">
+<span style="width: 26px; color: #006CAB">3</span><span>Method</span><span style="flex: 1"></span><span>6</span>
+</div>
+<div style="display: flex; align-items: baseline; gap: 8px; padding-left: 26px">
+<span style="width: 34px">3.1</span><span>Map generation</span><span style="flex: 1; border-bottom: 1px dotted #666768; transform: translateY(-4px)"></span><span>6</span>
+</div>
+<div style="display: flex; align-items: baseline; gap: 8px; padding-left: 26px">
+<span style="width: 34px">3.2</span><span>Implementation</span><span style="flex: 1; border-bottom: 1px dotted #666768; transform: translateY(-4px)"></span><span>7</span>
+</div>
+
+<div style="display: flex; align-items: baseline; gap: 8px; font-weight: 700; margin-top: 12px">
+<span style="width: 26px; color: #006CAB">4</span><span>Results</span><span style="flex: 1"></span><span>9</span>
+</div>
+<div style="display: flex; align-items: baseline; gap: 8px; font-weight: 700; margin-top: 12px">
+<span style="width: 26px; color: #006CAB">5</span><span>Discussion</span><span style="flex: 1"></span><span>12</span>
+</div>
+<div style="display: flex; align-items: baseline; gap: 8px; font-weight: 700; margin-top: 12px">
+<span style="width: 26px; color: #006CAB">6</span><span>Conclusion</span><span style="flex: 1"></span><span>14</span>
+</div>
+
+<div style="display: flex; align-items: baseline; gap: 8px; font-weight: 700; margin-top: 12px">
+<span>References</span><span style="flex: 1"></span><span>15</span>
+</div>
+<div style="display: flex; align-items: baseline; gap: 8px; font-weight: 700; margin-top: 12px">
+<span style="width: 26px; color: #006CAB">A</span><span>Additional experiments</span><span style="flex: 1"></span><span>16</span>
+</div>
+</div>
+</section>
+
+<footer style="position: absolute; left: 94px; right: 94px; bottom: 48px; display: flex; justify-content: space-between; align-items: baseline; border-top: 1px solid #939598; padding-top: 8px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 12px; color: #666768">
+<span>FIT3162 · Final Report</span>
+<span>ii</span>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":794,"height":1123}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

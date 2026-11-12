@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Report cover</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+body{margin:0}
+a{color:#006CAB}a:hover{color:#231F20}
+</style>
+</helmet>
+<div style="width: 794px; height: 1123px; box-sizing: border-box; position: relative; background: #FFFFFF; color: #231F20; font-family: 'STIX Two Text', 'Times New Roman', serif; font-size: 15px; line-height: 1.5">
+
+<div style="position: absolute; left: 94px; right: 94px; top: 80px; display: flex; justify-content: space-between; align-items: flex-end">
+<img src="/_blob/d2817cb0c9d0db0f51692d4323482fbb" alt="Monash University" style="height: 56px; width: auto; display: block">
+<sc-if value="{{showFaculty}}" hint-placeholder-val="{{false}}">
+<div style="text-align: right; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 12px; line-height: 1.45; color: #423F40">
+<div>Faculty of Information Technology</div>
+<div>Semester 2, 2026</div>
+</div>
+</sc-if>
+</div>
+
+<div style="position: absolute; left: 94px; right: 94px; top: 340px; display: flex; flex-direction: column; gap: 16px">
+<div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #006CAB">FIT3162 · Computer Science Project</div>
+<h1 style="margin: 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 44px; line-height: 1.1; font-weight: 300; color: #006CAB; letter-spacing: -0.01em; text-wrap: balance">Heuristic Search for Warehouse Robot Routing</h1>
+<sc-if value="{{showSubtitle}}" hint-placeholder-val="{{true}}">
+<p style="margin: 0; font-size: 19px; line-height: 1.4; font-style: italic; color: #423F40; text-wrap: balance">A comparison of A*, weighted A* and jump point search on grid maps</p>
+</sc-if>
+<div style="position: relative; height: 1px; background: #939598; margin-top: 14px">
+<div style="position: absolute; left: 26px; top: -6px; width: 12px; height: 12px; box-sizing: border-box; background: #FFFFFF; border-right: 1px solid #939598; border-bottom: 1px solid #939598; transform: rotate(45deg)"></div>
+</div>
+<sc-if value="{{showDocType}}" hint-placeholder-val="{{false}}">
+<div style="font-size: 16px">Final Report</div>
+</sc-if>
+</div>
+
+<div style="position: absolute; left: 0; bottom: 0; width: 794px; height: 14px; background: #006CAB"></div>
+
+<div style="position: absolute; left: 94px; right: 94px; bottom: 96px; display: flex; flex-direction: column; gap: 26px">
+<sc-if value="{{showGroup}}" hint-placeholder-val="{{false}}">
+<table style="border-collapse: collapse; width: 100%; font-size: 15px">
+<thead>
+<tr style="border-top: 1.5px solid #231F20; border-bottom: 1px solid #231F20">
+<th style="text-align: left; padding: 6px 8px 6px 4px; font-weight: 400; font-style: italic">Author</th>
+<th style="text-align: left; padding: 6px 8px; font-weight: 400; font-style: italic">Student ID</th>
+<th style="text-align: left; padding: 6px 4px 6px 8px; font-weight: 400; font-style: italic">Contribution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="padding: 6px 8px 6px 4px">[Author 1]</td>
+<td style="padding: 6px 8px">[Student ID]</td>
+<td style="padding: 6px 4px 6px 8px">[Sections or share]</td>
+</tr>
+<tr>
+<td style="padding: 6px 8px 6px 4px">[Author 2]</td>
+<td style="padding: 6px 8px">[Student ID]</td>
+<td style="padding: 6px 4px 6px 8px">[Sections or share]</td>
+</tr>
+<tr style="border-bottom: 1.5px solid #231F20">
+<td style="padding: 6px 8px 6px 4px">[Author 3]</td>
+<td style="padding: 6px 8px">[Student ID]</td>
+<td style="padding: 6px 4px 6px 8px">[Sections or share]</td>
+</tr>
+</tbody>
+</table>
+</sc-if>
+
+<div style="display: flex; flex-direction: column; gap: 6px">
+<sc-for list="{{fields}}" as="field" hint-placeholder-count="3">
+<div style="display: flex; gap: 12px; align-items: baseline; font-size: 16px">
+<span style="flex: none; width: 110px; font-style: italic; color: #423F40">{{field.label}}</span>
+<span>{{field.value}}</span>
+</div>
+</sc-for>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"showSubtitle":{"editor":"boolean","default":true,"section":"Cover fields"},"showGroup":{"editor":"boolean","default":false,"section":"Cover fields"},"showSupervisor":{"editor":"boolean","default":false,"section":"Cover fields"},"showWordCount":{"editor":"boolean","default":false,"section":"Cover fields"},"showDocType":{"editor":"boolean","default":false,"section":"Cover fields"},"showFaculty":{"editor":"boolean","default":false,"section":"Cover fields"},"$preview":{"width":794,"height":1123}}'>
+class Component extends DCLogic {
+renderVals() {
+const p = this.props;
+const showGroup = p.showGroup ?? false;
+const fields = [];
+if (!showGroup) {
+fields.push({ label: 'Author', value: '[Your Name]' });
+fields.push({ label: 'Student ID', value: '[Student ID]' });
+}
+if (p.showSupervisor ?? false) fields.push({ label: 'Supervisor', value: '[Supervisor Name]' });
+fields.push({ label: 'Date', value: '13 November 2026' });
+if (p.showWordCount ?? false) fields.push({ label: 'Word count', value: '[Word count]' });
+return {
+showSubtitle: p.showSubtitle ?? true,
+showGroup: showGroup,
+showDocType: p.showDocType ?? false,
+showFaculty: p.showFaculty ?? false,
+fields: fields
+};
+}
+}
+</script>
+</body>
+</html>
