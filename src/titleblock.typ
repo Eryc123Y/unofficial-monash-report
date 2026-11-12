@@ -4,6 +4,12 @@
   set text(top-edge: compact-top-edge, bottom-edge: zero)
   set par(justify: false, leading: title-leading)
   v(first-page-top - margin-top, weak: false)
+  let items = ()
+  if present(o.author) { items.push(text(weight: "bold", fill: monash-black, o.author)) }
+  if present(o.student-id) { items.push(o.student-id) }
+  if present(o.tutor) { items.push([Tutor: #o.tutor]) }
+  if present(o.date) { items.push(date-text(o.date)) }
+  items += o.info.filter(present)
   if present(o.logo) or present(o.unit) or present(o.semester) {
     block(width: full, below: title-gap)[
       #grid(columns: (1fr, 1fr), align: bottom,
@@ -12,13 +18,7 @@
           (o.unit, o.semester).filter(present).join(linebreak()))))
     ]
   }
-  block(above: zero, inset: (top: assignment-title-inset), below: byline-gap, text(top-edge: title-top-edge, bottom-edge: title-bottom-edge, hyphenate: false,font: o.heading-font, size: assignment-title-size, weight: light-weight, fill: o.accent, o.title))
-  let items = ()
-  if present(o.author) { items.push(text(weight: "bold", fill: monash-black, o.author)) }
-  if present(o.student-id) { items.push(o.student-id) }
-  if present(o.tutor) { items.push([Tutor: #o.tutor]) }
-  if present(o.date) { items.push(date-text(o.date)) }
-  items += o.info.filter(present)
+  block(above: zero, inset: (top: assignment-title-inset), below: if items.len() > 0 { byline-gap } else { zero }, text(top-edge: title-top-edge, bottom-edge: title-bottom-edge, hyphenate: false, font: o.heading-font, size: assignment-title-size, weight: light-weight, fill: o.accent, o.title))
   if items.len() > 0 {
     block(above: zero, below: zero, text(top-edge: body-top-edge, bottom-edge: body-bottom-edge, font: o.heading-font, size: byline-size, fill: monash-grey-dark, items.join([ · ])))
   }
