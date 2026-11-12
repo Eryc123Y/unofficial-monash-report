@@ -2,15 +2,16 @@
 
 #show: assignment.with(
   // Opt into the preferred stacks; missing font families produce warnings.
-  // ..monash-fonts,
-  title: [Assignment Title],
-  author: [\[Your Name\]],
-  student-id: [\[Student ID\]],
-  unit: "UNIT0000 Example Unit",
+  // ..monash-fonts, // optional
+  title: [Assignment Title], // required
+  author: [\[Your Name\]], // optional
+  student-id: [\[Student ID\]], // optional
+  unit: "UNIT0000 Example Unit", // optional
   // Obtain an authorised logo, put it in assets/, then uncomment this line:
-  // logo: image("assets/logo.svg"),
+  // logo: image("assets/logo.svg"), // optional
 )
 
+// Marks are optional; omit marks: or set show-marks: false to hide them.
 #question(marks: 10)[Replace this with the question statement.]
 
 + Write the first part of your answer here.

@@ -46,6 +46,7 @@ typst init @preview/unofficial-monash-report:0.1.0 my-report
 #show: report.with(
   title: [Report Title],
   abstract: [Summarise the purpose, method and main result.],
+  outline: true,
   keywords: ("first keyword", "second keyword"),
 )
 = Introduction
@@ -89,6 +90,51 @@ content; `none` and empty text suppress a field. Bad types and unknown
 arguments panic with the argument name. The document body follows the show
 rule as ordinary Typst markup.
 
+### Choosing what appears
+
+Everything except `title` is optional and prints nothing when unset. In
+particular, dates and contents are opt-in: pass `date: datetime.today()` or
+`outline: true` when you want them. Font, paper and spacing settings style
+content rather than adding printed fields.
+
+| Element | How to hide it | How to rename it |
+| --- | --- | --- |
+| Author / group authors | `author: none`, `authors: ()` | Your values; report label: `labels.author` |
+| Student ID | `student-id: none`; omit it from each author dictionary | Your value; report label: `labels.student-id` |
+| Tutor | `tutor: none` | `labels.tutor` |
+| Unit, semester, faculty | Set the relevant argument to `none` | Write your own argument content |
+| Date | `date: none` or omit it | `labels.date` on reports |
+| Subtitle, document type | `subtitle: none`, `doc-type: none` | Write your own argument content |
+| Supervisor, word count | `supervisor: none`, `word-count: none` | `labels.supervisor`, `labels.word-count` |
+| Contribution column | Omit every author's `contribution` | `labels.contribution` |
+| Abstract | `abstract: none` | `labels.abstract` |
+| Keywords | `keywords: ()` | `labels.keywords` |
+| Contents | `outline: false` or omit it | `labels.contents` |
+| Question | Omit the component call | `labels.question`, including references |
+| Marks | `show-marks: false`, or omit a question's `marks` | `labels.mark` / `labels.marks` |
+| Question statement box | `question-box: false` gives plain text; omit the body to hide the statement | No printed label |
+| Proof / theorem-like components | Omit the component call; use an empty label to hide only its word | `labels.proof` or the environment's key |
+| Listing caption | Omit its caption | `labels.listing`, including references |
+| Native figure, table, equation, bibliography wording | Omit the native element, caption or numbering | Native `supplement:` / bibliography `title:` arguments |
+| Extra information / logo | `info: ()`, `logo: none` | Your own content |
+| Short title / running furniture | `short-title: none`; native `set page(header: none, footer: none)` | Your own short title or page content |
+
+Pass only the wording you want to change, for example
+`labels: (question: "Problem", tutor: "Demonstrator")`. Every label accepts a
+string or content, including `""` or `[]` to hide that word. Unknown keys and
+wrong value types panic with the key's name. Empty labels do not leave a
+colon, full stop or separator behind. Label overrides also set reference
+supplements for questions, listings and all seven theorem-like components.
+
+The complete label keys and English defaults are: `question: "Question"`,
+`mark: "mark"`, `marks: "marks"`, `tutor: "Tutor"`, `author: "Author"`,
+`student-id: "Student ID"`, `contribution: "Contribution"`,
+`supervisor: "Supervisor"`, `date: "Date"`, `word-count: "Word count"`,
+`abstract: "Abstract"`, `keywords: "Keywords"`, `contents: "Contents"`,
+`proof: "Proof"`, `listing: "Listing"`, `theorem: "Theorem"`, `lemma: "Lemma"`,
+`proposition: "Proposition"`, `corollary: "Corollary"`,
+`definition: "Definition"`, `example: "Example"`, and `remark: "Remark"`.
+
 ### Shared options
 
 These apply to both `assignment` and `report`.
@@ -100,8 +146,11 @@ These apply to both `assignment` and `report`.
 | `student-id` | `none` | String or content; placeholder ID in examples. |
 | `unit` | `none` | String or content; assignment's top-right unit, report's blue uppercase unit line. |
 | `semester` | `none` | String or content; top-right line. |
-| `date` | `datetime.today()` | Datetime, content, or `none`; dates display as day, full month and year. |
+| `date` | `none` | Datetime, content, or `none`; dates display as day, full month and year. |
 | `short-title` | `auto` | String, content or `none`; `auto` joins the first word of `unit` and the title before its first colon with ` · `. Used in the footer and assignment header. |
+| `labels` | `(:)` | Dictionary of partial wording overrides; values are strings or content. See Choosing what appears. |
+| `show-marks` | `true` | Boolean; false suppresses all question marks, regardless of their arguments. |
+| `question-box` | `true` | Boolean; false prints statements without fill or inset. |
 | `logo` | `none` | Content, normally `image(...)`; proportional scaling, no recolouring. |
 | `font` | `auto` | Body font name or non-empty array of names. |
 | `heading-font` | `auto` | Heading and page-furniture font name or array. |
@@ -118,7 +167,7 @@ Use `#show: assignment.with(...)` with the shared options and:
 
 | Argument | Default | Type / effect |
 | --- | --- | --- |
-| `tutor` | `none` | String or content; adds `Tutor: ...` in the byline. |
+| `tutor` | `none` | String or content; adds the configurable tutor label and value to the byline. |
 | `info` | `()` | Array of content; extra byline items. Empty items are omitted, without separators. |
 
 The first page has a title block and footer. Subsequent pages add the short
@@ -138,8 +187,8 @@ Use `#show: report.with(...)` with the shared options and:
 | `faculty` | `none` | String or content; top-right cover line. |
 | `info` | `()` | Array of `(label, value)` pairs; extra cover rows after the standard fields. |
 | `abstract` | `none` | String or content; indented front-matter abstract. |
-| `keywords` | `()` | Array of strings or content; joined with commas after `Keywords:`. |
-| `outline` | `true` | Boolean; show a two-level table of contents. |
+| `keywords` | `()` | Array of strings or content; joined with commas after the configurable keywords label. |
+| `outline` | `false` | Boolean; show a two-level table of contents. |
 
 The cover is unnumbered. Abstract and contents share a page when they fit;
 front matter starts at roman i. The body restarts at arabic 1. Level-one
@@ -168,9 +217,11 @@ Your group's report.
 
 `question(marks: none, title: none, number: auto)[statement]` steps its own
 counter. A positive integer `number` overrides it; following questions
-continue from that value. Numeric marks gain the word “marks”; content and
-strings are printed as supplied. Omit the statement to get a heading only.
-A label after the call makes `@label` print “Question N”.
+continue from that value. Numeric marks use “mark” for 1 and “marks” otherwise;
+content and strings are printed as supplied. Both words follow `labels`.
+`show-marks: false` suppresses numeric, string and content marks globally.
+`question-box: false` removes the statement fill and inset. Omit the statement to get a heading only.
+A label after the call makes `@label` print the configured question word and number.
 
 Ordinary `+` lists give `(a)`, `(b)`, then nested `(i)`, `(ii)`.
 
@@ -336,6 +387,11 @@ scripts/check.sh
 scripts/check.sh --ignore-system-fonts
 scripts/check.sh --thumbnail
 ```
+
+Render assertions compare omitted fields with title/author-only baselines,
+including printed text, page counts, shape positions and body anchors. Every
+field also has a positive control. Marks visibility, plain/boxed statements,
+custom labels and their references are asserted in both document modes.
 
 Both CI jobs use Typst 0.15.1. The script enforces a 100-character line limit
 in `lib.typ`, `src/`, `tests/`, `examples/`, and `template/`, plus fewer than

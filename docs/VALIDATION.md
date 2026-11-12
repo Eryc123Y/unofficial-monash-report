@@ -12,8 +12,8 @@ scripts/check.sh --ignore-system-fonts
 scripts/check.sh --thumbnail
 ```
 
-The first two logs are `build/review-1-check-system-fonts.log` and
-`build/review-1-check-embedded-fonts.log`. Each run reports 117 successful checks,
+The first two logs are `build/round-2-check-system-fonts.log` and
+`build/round-2-check-embedded-fonts.log`. Each run reports 165 successful checks,
 including expected invalid-argument failures. The thumbnail run also renders
 both complete examples to PNG at 96 PPI in `build/preview/`, copies the three
 README previews to `docs/preview/`, and renders the starter at 100 PPI for
@@ -45,8 +45,8 @@ TYPST_PACKAGE_PATH="$PWD/build/packages" typst compile --root . --ignore-system-
 | --- | --- | --- |
 | 1. Both font modes, no warnings | PASS | Both required commands exit 0. Every diagnostic fails the script. |
 | 2. Mock content and visual layout | PASS, with the precedence decisions below | Assignment is 2 A4 pages. Report is 18 A4 pages, preserving the mock's contents destinations with editable placeholders on unspecified pages. Both assignment pages, report cover, combined front matter and Background page were rendered and visually compared against the five HTML mocks. Code/table row heights, title wrapping, rules, question boxes, heading spacing and footer positions were adjusted against those views. |
-| 3. Omitted optional arguments leave no gaps/separators | PASS | Title-only fixtures, `date: none`, empty fields, individual cover-field variants, no-logo fixtures, conditional row/column generation and filtered byline items. The byline's spacing is removed when no items remain. |
-| 4. No Monash marks or personal details | PASS | All committed image assets were inspected. The only supplied logo-slot asset is three plain rectangles. Examples and tests use bracketed names/IDs; bibliography data is explicitly fictional. No official mark was downloaded. The original spec's sample ID remains in the untouched specification, not in a document's personal-data fields. |
+| 3. Omitted optional arguments leave no gaps/separators | PASS | Rendered assertions cover all 14 requested fields in 19 mode/field combinations. Explicit unset values match omitted baselines in printed text, page counts, shape positions and body anchors, with a visible positive control for every field. Pinned baselines reject leftover gaps, labels and separators. Hidden marks also match absent marks. |
+| 4. No Monash marks or personal details | PASS | All committed image assets were inspected. The only supplied logo-slot asset is three plain rectangles. Examples and tests use bracketed names/IDs; bibliography data is explicitly fictional. No official mark was downloaded. The original spec's sample ID remains in the specification, not in a document's personal-data fields. |
 | 5. Notch only in the two prescribed places | PASS | Exactly two call sites: `src/titleblock.typ` and `src/cover.typ`; geometry is defined in `src/design.typ`. |
 | 6. README requirements and compiling samples | PASS | Notice, three previews, logo instructions, both quick starts, complete argument tables, components, fonts and design notes. All nine Typst code samples compile in both modes. |
 | 7. Source file limits and entrypoint | PASS | Every file under `src/` is below 300 lines (largest: 207). The script also enforces at most 100 characters per line in `lib.typ`, `src/`, `tests/`, `examples/`, and `template/`. `lib.typ` contains only explicit imports/re-exports. `tests/api.typ` asserts exactly 20 public names and their types, including the four-stack `monash-fonts` dictionary. |
@@ -112,3 +112,49 @@ The report cover/body previews and starter thumbnail are byte-for-byte
 unchanged after reformatting. The assignment preview was refreshed after
 removing the requested forced proof line break. The author metadata now reads
 `["EY2234 <@Eryc123Y>"]`. All work remains local on the original branch.
+
+## Review round 2 checks
+
+The final three check commands pass with no warnings using Typst 0.15.1.
+Normal and embedded-only runs each report 165 successes; the thumbnail run
+reports 168, including its three PNG renders. The current thumbnail log is
+`build/round-2-check-thumbnail.log`. The 100-character and below-300-line
+source limits still pass; the largest source file remains 207 lines.
+
+New observable-output assertions:
+
+- `tests/omission.typ` is typeset for each field in each applicable mode.
+  `scripts/assert-omission.pl` compares the complete printed-text records,
+  page numbers, notch position and body positions with a clean baseline.
+  The baselines are pinned by `tests/assets/omission-anchors.json`; unrequested
+  wording or separators also fail. Each field must visibly change the output
+  when set, so an ignored argument cannot produce a false pass.
+- The fields are tutor, student ID, unit, semester, date, abstract, keywords,
+  contents, supervisor, word count, subtitle, document type, faculty and marks.
+  There are 19 applicable mode/field combinations. Both absent marks and
+  `show-marks: false` must produce the same output and positions.
+- `tests/labels.typ` checks all custom words, singular/plural labels, question,
+  listing and seven theorem references, and group-author headings.
+  `tests/empty-labels.typ` rejects leftover words, colons and proof full stops.
+- `tests/question-options.typ` asserts numeric, string and content marks are
+  suppressed together. It checks default English `1 mark` / `2 marks`, actual
+  fill presence and the statement's left edge in both modes. Eight flag
+  permutations run, and `scripts/assert-question-box.pl` checks both horizontal
+  and vertical inset differences in four paired render comparisons.
+- API failure cases cover unknown label keys, wrong label dictionary/value
+  types, and non-boolean values for both new display flags in both modes.
+
+Dates now default to `none` and contents to `false`, so leaving them unset
+prints nothing. The report example and contents stress fixture explicitly
+request contents. `README.md` has the output-choice table and all label keys;
+`template/main.typ` marks every optional field as such. Section 3 of
+`docs/spec/SPEC.md` records the new options and defaults. Native figure/table/
+equation supplements and bibliography titles remain configurable with their
+native arguments. No optional field is required by the starter.
+
+All updated previews were rendered and inspected. No publication, push, PR
+or tag was made.
+
+The three existing README previews remain byte-for-byte identical with all
+example fields explicitly enabled. The starter thumbnail changes only as
+expected for the now-omitted automatic date.
