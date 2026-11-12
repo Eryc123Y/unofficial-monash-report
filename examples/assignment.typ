@@ -29,8 +29,7 @@
     Induct on the number $k$ of edges on a cheapest path from $n$ to a goal.
     If $k = 0$ then $n$ is a goal and $h(n) = 0 = h^*(n)$. Otherwise let $n'$
     be the next node on that path, so that $h^*(n) = c(n, n') + h^*(n')$ and
-    $n'$ has a cheapest path of $k - 1$ edges. \
-    By
+    $n'$ has a cheapest path of $k - 1$ edges. By
     #ref(<eq-consistency>, supplement: none) and the induction hypothesis,
     #math.equation(block: true, numbering: none)[
       $ h(n) <= c(n, n') + h(n') <= c(n, n') + h^*(n') = h^*(n). $
