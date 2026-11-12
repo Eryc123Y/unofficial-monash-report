@@ -1,403 +1,400 @@
 # Unofficial Monash Report
 
-A Typst template package for STEM assignments and reports. One show rule sets
-serif body text, restrained blue headings, running heads, academic tables,
-numbered questions, and referenceable theorem environments. Requires Typst
-0.15.0 or newer.
+A [Typst](https://typst.app) template for assignments and reports at Monash
+University, made for STEM units. One import gives you a title block or cover,
+numbered questions, theorems and proofs, three-line tables, numbered code
+listings and running heads, in Monash blue.
 
-**Unofficial:** this package is not affiliated with or endorsed by Monash
-University. No Monash logo, crest, or wordmark is included. Obtain a logo
-yourself, ensure you have the right to use it, and supply it with `logo:`.
+This is an unofficial community package. It is not affiliated with or endorsed
+by Monash University, and it does not include the Monash logo. See
+[Adding your logo](#adding-your-logo).
 
 | Assignment | Report cover | Report body |
 | --- | --- | --- |
-| ![Assignment with a blue title, question statement, lemma and proof.](docs/preview/assignment.png) | ![Report cover with a balanced title, author fields and blue bottom band.](docs/preview/report-cover.png) | ![Report chapter with an equation, definition and schematic figure.](docs/preview/report-body.png) |
-
-The previews contain no institutional mark. All names, IDs, measurements in
-example result tables, and bibliographic entries are placeholders.
+| ![First page of an assignment: blue title, a question in a grey box, a lemma and its proof.](https://raw.githubusercontent.com/Eryc123Y/unofficial-monash-report/v0.1.0/docs/preview/assignment.png) | ![Report cover: unit line, large blue title, subtitle, and author details at the bottom.](https://raw.githubusercontent.com/Eryc123Y/unofficial-monash-report/v0.1.0/docs/preview/report-cover.png) | ![Report page: a numbered chapter with an equation, a definition and a figure.](https://raw.githubusercontent.com/Eryc123Y/unofficial-monash-report/v0.1.0/docs/preview/report-body.png) |
 
 ## Quick start
 
-After the package is available on Universe, create the assignment starter:
+Create a project from the template:
 
 ```sh
 typst init @preview/unofficial-monash-report:0.1.0 my-assignment
-typst compile my-assignment/main.typ
 ```
 
-A minimal assignment:
+Or start from scratch. An assignment:
 
 ```typst
 #import "@preview/unofficial-monash-report:0.1.0": *
-#show: assignment.with(title: [Assignment Title])
-#question(marks: 10)[State the question here.]
-+ Write the first part of the answer.
-+ Write the second part.
-```
 
-For a report, initialise the same starter and replace `main.typ`:
-
-```sh
-typst init @preview/unofficial-monash-report:0.1.0 my-report
-```
-
-```typst
-#import "@preview/unofficial-monash-report:0.1.0": *
-#show: report.with(
-  title: [Report Title],
-  abstract: [Summarise the purpose, method and main result.],
-  outline: true,
-  keywords: ("first keyword", "second keyword"),
+#show: assignment.with(
+  title: [Assignment 2: Informed Search],
+  author: "Your Name",
+  student-id: "12345678",
+  unit: "FIT3080 Artificial Intelligence",
 )
-= Introduction
-Start the report here.
-== Setting
-Describe the setting.
+
+#question(marks: 10)[Show that a consistent heuristic is admissible.]
+
++ Write the first part of your answer here.
++ Write the second part here.
 ```
 
-Before publication, use the temporary local package path created by
-`scripts/check.sh`; no global package installation is required for development.
-The complete examples reproduce the supplied mock's assignment and report
-content. Unspecified report pages contain editable placeholders.
+A report:
+
+```typst
+#import "@preview/unofficial-monash-report:0.1.0": *
+
+#show: report.with(
+  title: [Heuristic Search for Warehouse Robot Routing],
+  subtitle: [A comparison of three algorithms],
+  unit: "FIT3162 · Computer Science Project",
+  author: "Your Name",
+  student-id: "12345678",
+  date: datetime.today(),
+  abstract: [Summarise the purpose, the method and the main result.],
+  outline: true,
+)
+
+= Introduction
+
+Start the report here.
+
+== Problem statement
+
+Describe the problem.
+```
+
+Requires Typst 0.15.0 or newer.
+
+## The two modes
+
+| | `assignment` | `report` |
+| --- | --- | --- |
+| Opening | Title block at the top of page 1 | Separate cover page |
+| Structure | `question` blocks with lettered parts | Numbered chapters and sections |
+| Front matter | None | Optional abstract and contents |
+| Numbering | Equation (1), Lemma 1 | Equation (2.1), Definition 2.1, by chapter |
+| Page numbers | 1, 2, 3 | Roman for front matter, then 1, 2, 3 |
+
+Every component below works in both modes.
+
+## You choose what appears
+
+Only `title` is required. Every other field is left out of the page when you do
+not set it, with no gap and no stray label. This includes the date and the
+contents page: set `date:` or `outline: true` when you want them.
+
+Three more controls:
+
+- `labels` renames any word the template prints. Pass only the ones you want
+  to change.
+- `show-marks: false` hides the marks of every question.
+- `question-box: false` prints question statements as plain text, without the
+  grey box.
+
+```typst
+#import "@preview/unofficial-monash-report:0.1.0": *
+
+#show: assignment.with(
+  title: [Problem Set 3],
+  author: "Your Name",
+  tutor: "Their Name",
+  labels: (question: "Problem", tutor: "Demonstrator", marks: "pts", mark: "pt"),
+  question-box: false,
+)
+
+#question(marks: 5)[State the problem here.] <p-first>
+
+Your answer. A reference such as @p-first prints "Problem 1".
+```
+
+The words you can rename, with their defaults:
+
+| Key | Default | Key | Default |
+| --- | --- | --- | --- |
+| `question` | Question | `abstract` | Abstract |
+| `marks` / `mark` | marks / mark | `keywords` | Keywords |
+| `tutor` | Tutor | `contents` | Contents |
+| `author` | Author | `proof` | Proof |
+| `student-id` | Student ID | `listing` | Listing |
+| `contribution` | Contribution | `theorem`, `lemma`, `proposition` | Theorem, Lemma, Proposition |
+| `supervisor` | Supervisor | `corollary`, `definition` | Corollary, Definition |
+| `date` | Date | `example`, `remark` | Example, Remark |
+| `word-count` | Word count | | |
+
+An empty label (`""`) hides that word. An unknown key stops compilation and
+names the key.
 
 ## Adding your logo
 
-Obtain the approved file from Monash's [official logo resources](https://www.monash.edu/brandbook/brand-elements/our-logo)
-using your institutional access where required. Put it in `assets/logo.svg`
-next to your document. Add `logo: image("assets/logo.svg"),` to its show rule:
+The package does not ship the Monash logo, because it is a registered mark and
+this is not an official template. To use it you supply the file yourself, and
+you are responsible for having the right to use it.
+
+1. Download the logo from the "Access logos" section of Monash's
+   [Brand book](https://www.monash.edu/brandbook/brand-elements/our-logo).
+   Monash login may be required.
+2. Save it in your project, for example as `assets/logo.svg`.
+3. Add one line to the show rule:
 
 ```typst
 #import "@preview/unofficial-monash-report:0.1.0": *
+
 #show: assignment.with(
   title: [Assignment Title],
   logo: image("assets/logo.svg"),
 )
+
 Your answer.
 ```
 
-Use the supplied logo on white only in this template. Do not recolour,
-stretch, or crop it. Preserve the official clear space, at least the height
-of the letter M in the logo, and check the minimum size for your chosen
-format in the linked resources. The package scales content proportionally
-to 30pt on assignments and 42pt on report covers; include any required clear
-space in your asset. The layout is complete when `logo: none` is used.
-Tests use only an image of three plain rectangles.
+The logo appears at the top left of an assignment's first page and of a report
+cover, scaled to fit. Follow Monash's rules for it: keep it on the white
+background, and do not recolour, stretch or crop it. Any image works here, so
+the same option serves a club or project logo. Without a logo the layout
+closes up and looks complete.
 
-## Arguments
-
-All arguments are optional except `title`. Text fields accept strings or
-content; `none` and empty text suppress a field. Bad types and unknown
-arguments panic with the argument name. The document body follows the show
-rule as ordinary Typst markup.
-
-### Choosing what appears
-
-Everything except `title` is optional and prints nothing when unset. In
-particular, dates and contents are opt-in: pass `date: datetime.today()` or
-`outline: true` when you want them. Font, paper and spacing settings style
-content rather than adding printed fields.
-
-| Element | How to hide it | How to rename it |
-| --- | --- | --- |
-| Author / group authors | `author: none`, `authors: ()` | Your values; report label: `labels.author` |
-| Student ID | `student-id: none`; omit it from each author dictionary | Your value; report label: `labels.student-id` |
-| Tutor | `tutor: none` | `labels.tutor` |
-| Unit, semester, faculty | Set the relevant argument to `none` | Write your own argument content |
-| Date | `date: none` or omit it | `labels.date` on reports |
-| Subtitle, document type | `subtitle: none`, `doc-type: none` | Write your own argument content |
-| Supervisor, word count | `supervisor: none`, `word-count: none` | `labels.supervisor`, `labels.word-count` |
-| Contribution column | Omit every author's `contribution` | `labels.contribution` |
-| Abstract | `abstract: none` | `labels.abstract` |
-| Keywords | `keywords: ()` | `labels.keywords` |
-| Contents | `outline: false` or omit it | `labels.contents` |
-| Question | Omit the component call | `labels.question`, including references |
-| Marks | `show-marks: false`, or omit a question's `marks` | `labels.mark` / `labels.marks` |
-| Question statement box | `question-box: false` gives plain text; omit the body to hide the statement | No printed label |
-| Proof / theorem-like components | Omit the component call; use an empty label to hide only its word | `labels.proof` or the environment's key |
-| Listing caption | Omit its caption | `labels.listing`, including references |
-| Native figure, table, equation, bibliography wording | Omit the native element, caption or numbering | Native `supplement:` / bibliography `title:` arguments |
-| Extra information / logo | `info: ()`, `logo: none` | Your own content |
-| Short title / running furniture | `short-title: none`; native `set page(header: none, footer: none)` | Your own short title or page content |
-
-Pass only the wording you want to change, for example
-`labels: (question: "Problem", tutor: "Demonstrator")`. Every label accepts a
-string or content, including `""` or `[]` to hide that word. Unknown keys and
-wrong value types panic with the key's name. Empty labels do not leave a
-colon, full stop or separator behind. Label overrides also set reference
-supplements for questions, listings and all seven theorem-like components.
-
-The complete label keys and English defaults are: `question: "Question"`,
-`mark: "mark"`, `marks: "marks"`, `tutor: "Tutor"`, `author: "Author"`,
-`student-id: "Student ID"`, `contribution: "Contribution"`,
-`supervisor: "Supervisor"`, `date: "Date"`, `word-count: "Word count"`,
-`abstract: "Abstract"`, `keywords: "Keywords"`, `contents: "Contents"`,
-`proof: "Proof"`, `listing: "Listing"`, `theorem: "Theorem"`, `lemma: "Lemma"`,
-`proposition: "Proposition"`, `corollary: "Corollary"`,
-`definition: "Definition"`, `example: "Example"`, and `remark: "Remark"`.
-
-### Shared options
+## Options
 
 These apply to both `assignment` and `report`.
 
-| Argument | Default | Type / effect |
+| Option | Default | Meaning |
 | --- | --- | --- |
-| `title` | required | String or content; document title. |
-| `author` | `none` | String or content; single author. |
-| `student-id` | `none` | String or content; placeholder ID in examples. |
-| `unit` | `none` | String or content; assignment's top-right unit, report's blue uppercase unit line. |
-| `semester` | `none` | String or content; top-right line. |
-| `date` | `none` | Datetime, content, or `none`; dates display as day, full month and year. |
-| `short-title` | `auto` | String, content or `none`; `auto` joins the first word of `unit` and the title before its first colon with ` · `. Used in the footer and assignment header. |
-| `labels` | `(:)` | Dictionary of partial wording overrides; values are strings or content. See Choosing what appears. |
-| `show-marks` | `true` | Boolean; false suppresses all question marks, regardless of their arguments. |
-| `question-box` | `true` | Boolean; false prints statements without fill or inset. |
-| `logo` | `none` | Content, normally `image(...)`; proportional scaling, no recolouring. |
-| `font` | `auto` | Body font name or non-empty array of names. |
-| `heading-font` | `auto` | Heading and page-furniture font name or array. |
-| `math-font` | `auto` | Math font name or array. |
-| `code-font` | `auto` | Code font name or array. |
-| `font-size` | `11pt` | Positive absolute length; body size. |
-| `accent` | `monash-blue` | Colour; replaces blue throughout the document. |
-| `paper` | `"a4"` | `a0`–`a6`, `us-letter`, `us-legal`, or `us-tabloid`. The design is sized for A4. |
-| `lang` | `"en"` | Non-empty language string for text and hyphenation. |
+| `title` | required | Document title. |
+| `author` | `none` | Your name. |
+| `student-id` | `none` | Your student ID. |
+| `unit` | `none` | Unit code and name. Top right on an assignment; the blue line above the title on a report cover. |
+| `semester` | `none` | Shown under the unit (assignment) or at the top right of the cover (report). |
+| `date` | `none` | A `datetime`, or any text. Use `datetime.today()` for today. |
+| `short-title` | `auto` | Text in the running head and footer. `auto` builds it from the unit code and the title. `none` removes it. |
+| `info` | `()` | Extra items. Assignment: an array of content added to the byline. Report: an array of `(label, value)` pairs added to the cover. |
+| `logo` | `none` | Your logo, usually `image("...")`. |
+| `labels` | `(:)` | Words to rename. See above. |
+| `show-marks` | `true` | Whether questions print their marks. |
+| `question-box` | `true` | Whether question statements sit in a grey box. |
+| `accent` | `monash-blue` | The accent colour used throughout. |
+| `font`, `heading-font`, `math-font`, `code-font` | `auto` | Font family, or an array of families. See [Fonts](#fonts). |
+| `font-size` | `11pt` | Body text size. |
+| `paper` | `"a4"` | Paper size. The layout is designed for A4. |
+| `lang` | `"en"` | Text language, used for hyphenation. |
 
-### Assignment options
+`assignment` also takes:
 
-Use `#show: assignment.with(...)` with the shared options and:
-
-| Argument | Default | Type / effect |
+| Option | Default | Meaning |
 | --- | --- | --- |
-| `tutor` | `none` | String or content; adds the configurable tutor label and value to the byline. |
-| `info` | `()` | Array of content; extra byline items. Empty items are omitted, without separators. |
+| `tutor` | `none` | Your tutor's name, added to the byline. |
 
-The first page has a title block and footer. Subsequent pages add the short
-title and author/ID above the running-head rule. Pages start at 1.
+`report` also takes:
 
-### Report options
-
-Use `#show: report.with(...)` with the shared options and:
-
-| Argument | Default | Type / effect |
+| Option | Default | Meaning |
 | --- | --- | --- |
-| `subtitle` | `none` | String or content; italic subtitle below the cover title. |
-| `doc-type` | `none` | String or content; cover text below the notched rule. |
-| `authors` | `()` | Array of dictionaries with `name`, optional `student-id`, optional `contribution`. Replaces the single-author fields. Contribution column appears only if at least one value is set. |
-| `supervisor` | `none` | String or content; cover row. |
-| `word-count` | `none` | Non-negative integer, string or content; cover row. |
-| `faculty` | `none` | String or content; top-right cover line. |
-| `info` | `()` | Array of `(label, value)` pairs; extra cover rows after the standard fields. |
-| `abstract` | `none` | String or content; indented front-matter abstract. |
-| `keywords` | `()` | Array of strings or content; joined with commas after the configurable keywords label. |
-| `outline` | `false` | Boolean; show a two-level table of contents. |
-
-The cover is unnumbered. Abstract and contents share a page when they fit;
-front matter starts at roman i. The body restarts at arabic 1. Level-one
-headings do not force a page break. The running head shows the current
-chapter and report title; the footer shows `short-title` and the page.
+| `subtitle` | `none` | Italic line under the cover title. |
+| `doc-type` | `none` | Kind of document, for example "Final Report". |
+| `authors` | `()` | For group work: an array of `(name:, student-id:, contribution:)`. Shown as a table and replaces `author` and `student-id`. `student-id` and `contribution` are optional in each entry. |
+| `supervisor` | `none` | Supervisor's name. |
+| `word-count` | `none` | A number or text. |
+| `faculty` | `none` | Shown at the top right of the cover. |
+| `abstract` | `none` | Abstract text. |
+| `keywords` | `()` | An array of keywords, shown under the abstract. |
+| `outline` | `false` | Whether to include a contents page. |
 
 A group report:
 
 ```typst
 #import "@preview/unofficial-monash-report:0.1.0": *
+
 #show: report.with(
-  title: [Group Report], outline: false, date: none,
+  title: [Group Report],
   authors: (
-    (name: [Author 1], student-id: [Student ID], contribution: [Method]),
-    (name: [Author 2], student-id: [Student ID]),
-    (name: [Author 3], student-id: [Student ID], contribution: [Results]),
+    (name: [First Author], student-id: [12345678], contribution: [Method]),
+    (name: [Second Author], student-id: [23456789], contribution: [Results]),
+    (name: [Third Author], student-id: [34567890]),
   ),
+  supervisor: "Their Name",
 )
+
 = Introduction
+
 Your group's report.
 ```
 
 ## Components
 
-### Questions and answer parts
+### Questions and parts
 
-`question(marks: none, title: none, number: auto)[statement]` steps its own
-counter. A positive integer `number` overrides it; following questions
-continue from that value. Numeric marks use “mark” for 1 and “marks” otherwise;
-content and strings are printed as supplied. Both words follow `labels`.
-`show-marks: false` suppresses numeric, string and content marks globally.
-`question-box: false` removes the statement fill and inset. Omit the statement to get a heading only.
-A label after the call makes `@label` print the configured question word and number.
-
-Ordinary `+` lists give `(a)`, `(b)`, then nested `(i)`, `(ii)`.
+`question` prints "Question N", the marks on the right, and the statement in a
+grey box. Numbering is automatic. Write your answer after it; a numbered list
+gives parts `(a)`, `(b)`, and a nested list gives `(i)`, `(ii)`.
 
 ```typst
 #import "@preview/unofficial-monash-report:0.1.0": *
-#show: assignment.with(title: [Questions], date: none)
+
+#show: assignment.with(title: [Questions])
+
 #question(marks: 5, title: [A short proof])[Show the claim.] <q-claim>
-+ First answer part.
-  + First nested part.
-  + Second nested part.
-+ Second answer part.
+
++ First part of the answer.
+  + A nested part.
+  + Another nested part.
++ Second part of the answer.
+
 #question(number: 5)
-See @q-claim.
+
+This question has no statement and continues the numbering from 5. See @q-claim.
 ```
 
-### Theorems and proof
+| Argument | Default | Meaning |
+| --- | --- | --- |
+| `marks` | `none` | A number (prints "5 marks") or your own text. |
+| `title` | `none` | Printed after the number: "Question 1: A short proof". |
+| `number` | `auto` | Sets the number; later questions continue from it. |
+| body | none | The question statement. Leave it out for a heading only. |
 
-`theorem`, `lemma`, `proposition`, `corollary`, `definition`, `example`, and
-`remark` take a body, or a positional title followed by a body. All seven
-share one counter. The first four have italic bodies; the other three are
-upright. Labels and references use the correct environment name.
-`proof[body]` begins with italic “Proof.” and ends with a square at the right,
-including when the final item is a display equation.
+### Theorems and proofs
+
+`theorem`, `lemma`, `proposition`, `corollary`, `definition`, `example` and
+`remark` take a body, or a title and then a body. They share one counter and
+can be referenced. `proof` ends with a square at the right.
 
 ```typst
 #import "@preview/unofficial-monash-report:0.1.0": *
-#show: assignment.with(title: [A Result], date: none)
-#lemma[Non-negativity][For real $x$, $x^2 >= 0$.] <lem-square>
-#proof[Every real square is non-negative. $ x^2 >= 0 $]
-See @lem-square.
+
+#show: assignment.with(title: [A Result])
+
+#lemma[Non-negativity][For every real $x$, $x^2 >= 0$.] <lem-square>
+
+#proof[A real square is a product of two numbers of the same sign.]
+
+By @lem-square the sum of squares is non-negative.
 ```
 
-### Figures, tables, listings, equations and references
+### Figures, tables, code and equations
 
-Use native `figure`, `table`, `raw` and display math. Tables have three
-horizontal rules and captions above. Other figures and listings have
-captions below. Use `table.header` for the first row. Figures, tables,
-listings and equations each have their own counter. The theorem-like
-counter is separate and shared across environment kinds. Numbering is
-continuous in assignments and `chapter.n` in reports, with each counter
-reset at a level-one heading. Links and references use the accent colour.
+Use Typst's own `figure`, `table`, code blocks and display equations; the
+template styles and numbers them. Tables get three horizontal rules with the
+caption above. Code blocks get line numbers. To caption and reference a code
+listing, wrap it in `figure`.
 
-```typst
+````typst
 #import "@preview/unofficial-monash-report:0.1.0": *
-#show: report.with(title: [Native Components], outline: false, date: none)
+
+#show: report.with(title: [Results])
+
 = Results
+
 #figure(
-  table(columns: 2, table.header[Method][Count], [Example], [12]),
-  caption: [A three-line table.],
-) <tab-results>
-#figure([Figure content], caption: [A figure.]) <fig-result>
-#figure(raw("def identity(x):\n    return x", lang: "python", block: true),
-  caption: [An example listing.]) <code-example>
+  table(
+    columns: 3,
+    table.header[Map][Nodes expanded][Path cost],
+    [Small], [120], [18],
+    [Large], [4310], [96],
+  ),
+  caption: [Search effort on each map.],
+) <tab-effort>
+
+#figure(
+  ```python
+  def identity(x):
+      return x
+  ```,
+  caption: [A code listing.],
+) <code-identity>
+
 $ f(n) = g(n) + h(n) $ <eq-score>
-See @tab-results, @fig-result, @code-example and @eq-score.
-```
 
-### Code
-
-Fenced code blocks have black top and bottom rules, grey line numbers,
-blue keywords and grey comments. Inline code is undecorated. Listing
-captions require the native `figure(raw(...), caption: ...)` wrapper shown
-above. The package supplies its own syntax theme; it has no package dependency.
+See @tab-effort, @code-identity and @eq-score.
+````
 
 ### Appendix
 
-Wrap the report's appendix chapters in `appendix[...]` (or use it as a show
-rule for the remaining content). Chapter labels become A, B, and so on;
-subsections and component numbers use A.1, A.2, etc. Assignment use panics.
+In a report, put appendix chapters inside `appendix`. They are lettered A, B,
+and their equations and figures are numbered A.1, A.2.
 
 ```typst
 #import "@preview/unofficial-monash-report:0.1.0": *
-#show: report.with(title: [Report with Appendix], outline: false, date: none)
+
+#show: report.with(title: [Report with an Appendix])
+
 = Main text
+
 A result.
+
 #appendix[
   = Additional experiments
+
   $ x = y $
-  #lemma[An appendix result.]
 ]
 ```
 
-### Design tokens
+### Your own styling
 
-The public colours are `monash-blue`, `monash-black`, `monash-grey-dark`,
-`monash-grey`, `monash-grey-mid`, `monash-grey-soft`, and `monash-grey-light`.
-The exported names are `assignment`, `report`, `question`, `theorem`, `lemma`,
-`proposition`, `corollary`, `definition`, `example`, `remark`, `proof`, `appendix`,
-the `monash-fonts` dictionary, and the seven colours listed above. Importing
-`lib.typ` changes no document settings.
-Rules placed after the document's `#show:` can override the default styles.
+Typst `set` and `show` rules written after the `#show:` line still work, so
+you can adjust anything the options do not cover.
 
 ## Fonts
 
-Opt into all four preferred stacks with
-`report.with(..monash-fonts, title: [Report Title])`, or spread `..monash-fonts`
-into `assignment.with(...)`. **Typst warns about any listed family that is
-not installed.** This explicit opt-in passes every family through unchanged;
-it does not filter missing fonts.
+By default the template uses fonts built into Typst (Libertinus Serif, New
+Computer Modern Math, DejaVu Sans Mono), so it compiles the same everywhere,
+including the Typst web app, and never warns about a missing font.
 
-The exported `monash-fonts` dictionary contains these preferred stacks under
-`font`, `heading-font`, `math-font`, and `code-font`:
+The intended look uses Helvetica Neue for headings and STIX Two for text and
+mathematics. To switch it on, add `..monash-fonts` to the show rule:
 
-| Use | Ordered font families |
+```typ
+#import "@preview/unofficial-monash-report:0.1.0": *
+
+#show: assignment.with(
+  ..monash-fonts,
+  title: [Assignment Title],
+)
+
+Your answer.
+```
+
+`monash-fonts` sets these families, each with fallbacks:
+
+| Use | Families, in order |
 | --- | --- |
-| Body | STIX Two Text, Libertinus Serif |
-| Math | STIX Two Math, New Computer Modern Math |
-| Headings and page furniture | Helvetica Neue, Helvetica, Arial, Liberation Sans, Libertinus Serif |
+| Text | STIX Two Text, Libertinus Serif |
+| Mathematics | STIX Two Math, New Computer Modern Math |
+| Headings, running heads | Helvetica Neue, Helvetica, Arial, Liberation Sans, Libertinus Serif |
 | Code | JetBrains Mono, DejaVu Sans Mono |
 
-Typst 0.15.1 warns about every unavailable family in an explicit fallback
-list and exposes no font-enumeration API inside a document. To keep normal
-compilation warning-free, `auto` uses compiler-embedded fonts unless a
-font inventory is supplied. The fallback is Libertinus Serif for body and
-headings, New Computer Modern Math for math, and DejaVu Sans Mono for code.
-For `auto`, the preferred lists are filtered against the supplied inventory,
-in order. Explicit font arguments, including `..monash-fonts`, bypass this
-filter. No compiler diagnostics are suppressed.
+Typst prints a warning for each listed family that is not installed and then
+uses the next one. macOS has Helvetica Neue and STIX Two; on other systems
+expect a few warnings, or set `font`, `heading-font`, `math-font` and
+`code-font` yourself to fonts you have.
 
-`scripts/check.sh` supplies the actual inventory from `typst fonts`. For the
-same preferred font selection in your own project:
+## Design
 
-```sh
-typst compile --input "monash-fonts=$(typst fonts | tr '\n' '|')" main.typ
-```
+Colours come from the Monash
+[Brand book](https://www.monash.edu/brandbook/brand-elements/colours): Monash
+blue `#006DAE`, black, and the greys `#5A5A5A`, `#969696` and `#E6E6E6`.
+Helvetica Neue is the university's primary typeface. The page layout follows
+academic convention instead: serif body text, justified paragraphs, plain
+theorem style and three-line tables. The package borrows the colours and
+typeface and does not reproduce the brand guidelines.
 
-In the Typst web app, or when you know which fonts are installed, override
-font families explicitly. Explicit names are passed through unchanged,
-so Typst will warn if you choose an unavailable font. This portable example
-uses embedded families:
+## Exported names
 
-```typst
-#import "@preview/unofficial-monash-report:0.1.0": *
-#show: assignment.with(
-  title: [Font Overrides],
-  font: ("Libertinus Serif",),
-  heading-font: "Libertinus Serif",
-  math-font: "New Computer Modern Math",
-  code-font: "DejaVu Sans Mono",
-)
-Text and $x^2$.
-```
-
-## Design notes
-
-The supplied specification fixes `monash-blue` at `#006CAB`, with its
-specified black and grey palette. These values are retained for consistency
-with that brief. The [current published Monash palette](https://www.monash.edu/brandbook/brand-elements/colours)
-uses `#006DAE` and different greys; this package does not claim to reproduce
-the current brand guidelines. Its serif text, plain theorems, justified
-paragraphs and three-line tables follow academic convention. The small
-notch appears only under the assignment title and report cover title.
-
-The authoritative requirements and five HTML mocks remain in `docs/spec/`.
-Where their CSS conflicts with section 4, the section 4 sizes and numbering
-rules take precedence. In particular, combined abstract/contents start at i,
-although the mock footer shows ii. Fonts can change line wrapping.
+`assignment`, `report`, `question`, `appendix`, `proof`, the seven theorem
+environments (`theorem`, `lemma`, `proposition`, `corollary`, `definition`,
+`example`, `remark`), `monash-fonts`, and the colours `monash-blue`,
+`monash-black`, `monash-grey-dark`, `monash-grey`, `monash-grey-mid`,
+`monash-grey-soft` and `monash-grey-light`.
 
 ## Development
 
 ```sh
-scripts/check.sh
-scripts/check.sh --ignore-system-fonts
-scripts/check.sh --thumbnail
+scripts/check.sh                        # compile everything, fail on any warning
+scripts/check.sh --ignore-system-fonts  # the same with only Typst's built-in fonts
+scripts/check.sh --thumbnail            # also regenerate the previews and thumbnail
 ```
 
-Render assertions compare omitted fields with title/author-only baselines,
-including printed text, page counts, shape positions and body anchors. Every
-field also has a positive control. Marks visibility, plain/boxed statements,
-custom labels and their references are asserted in both document modes.
+The script compiles every file in `tests/`, `examples/` and `template/`, every
+Typst sample in this README, and a fresh `typst init` of the template. The
+requirements and the design mock are in `docs/spec/`.
 
-Both CI jobs use Typst 0.15.1. The script enforces a 100-character line limit
-in `lib.typ`, `src/`, `tests/`, `examples/`, and `template/`, plus fewer than
-300 lines per file under `src/`. It compiles every document in `tests/`,
-`examples/`, and `template/`, checks invalid-argument panics, chapter and page
-numbering, extracts and compiles all Typst samples from this README, and
-compiles a fresh `typst init`. `--thumbnail` also regenerates the three README
-previews and thumbnail. Generated PDFs, PNGs and test projects stay in
-ignored `build/`; the README previews and Universe thumbnail are tracked.
+## Licence
+
+MIT. See [LICENSE](LICENSE).

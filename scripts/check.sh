@@ -186,6 +186,7 @@ for kind in theorem lemma proposition corollary definition example remark proof;
 negative appendix mode appendix
 # README examples are standalone documents; the logo example gets a neutral asset.
 if [[ -f README.md ]]; then
+  rm -rf build/readme
   mkdir -p build/readme/assets
   cp tests/assets/placeholder.svg build/readme/assets/logo.svg
   awk '/^```typst$/ {n++; in_code=1; next} /^```$/ {in_code=0} in_code {print > ("build/readme/sample-" n ".typ")}' README.md
