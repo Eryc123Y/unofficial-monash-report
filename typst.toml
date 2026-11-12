@@ -8,7 +8,7 @@ description = "Monash-inspired academic assignments and STEM reports."
 keywords = ["monash", "academic", "assignment", "report", "STEM"]
 categories = ["report"]
 compiler = "0.15.0"
-exclude = ["docs", "examples", "scripts", "tests", ".github", "build"]
+exclude = ["docs", "examples", "scripts", "tests", ".github", "build", "AGENTS.md"]
 
 [template]
 path = "template"
