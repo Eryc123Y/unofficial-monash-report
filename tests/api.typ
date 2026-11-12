@@ -2,12 +2,14 @@
 #import "../src/design.typ": invalid-relative-size
 #let documented = (
   "assignment", "report", "question", "theorem", "lemma", "proposition", "corollary",
-  "definition", "example", "remark", "proof", "appendix", "monash-blue", "monash-black",
+  "definition", "example", "remark", "proof", "appendix",
+  "monash-blue", "monash-black",
   "monash-grey-dark", "monash-grey", "monash-grey-mid", "monash-grey-soft", "monash-grey-light",
 )
 #assert.eq(dictionary(package).keys().sorted(), documented.sorted())
 #for name in documented {
-  assert(type(dictionary(package).at(name)) == if name.starts-with("monash-") { color } else { function }, message: name)
+  let expected = if name.starts-with("monash-") { color } else { function }
+  assert.eq(type(dictionary(package).at(name)), expected, message: name)
 }
 // check.sh also compiles this file once per invalid argument and checks panic text.
 #let bad = sys.inputs.at("bad", default: "none")

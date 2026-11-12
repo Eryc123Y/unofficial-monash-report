@@ -1,7 +1,8 @@
 #import "@preview/unofficial-monash-report:0.1.0": *
 #import "../src/design.typ": *
 #show: report.with(
-  title: [Complete Report], subtitle: [Subtitle], unit: [UNIT0000 · Example Unit], doc-type: [Final Report],
+  title: [Complete Report], subtitle: [Subtitle],
+  unit: [UNIT0000 · Example Unit], doc-type: [Final Report],
   author: [\[Your Name\]], student-id: [\[Student ID\]], authors: (),
   supervisor: [\[Supervisor Name\]], date: datetime(year: 2026, month: 11, day: 13),
   word-count: 1200, faculty: [Example Faculty], semester: [Semester 2, 2026],

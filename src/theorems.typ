@@ -4,20 +4,28 @@
 #let chapter-number-at(location) = {
   let hs = query(heading.where(level: 1).before(location, inclusive: true))
   if hs.len() == 0 { "0" } else {
-    numbering(if hs.last().numbering == "A.1" { "A" } else { "1" }, counter(heading).at(location).first())
+    numbering(
+      if hs.last().numbering == "A.1" { "A" } else { "1" },
+      counter(heading).at(location).first(),
+    )
   }
 }
 #let chapter-number() = chapter-number-at(here())
 #let statement(kind, ..args) = {
   for key in args.named().keys() { panic("unknown argument `" + key + "`") }
   let items = args.pos()
-  require("body", items.len() in (1, 2) and items.all(valid-text), "one body, or a title and a body")
+  require(
+    "body", items.len() in (1, 2) and items.all(valid-text), "one body, or a title and a body",
+  )
   let title = if items.len() == 2 { items.first() }
-  figure(metadata((title: title, statement: items.last(), kind: kind)), kind: "theorem", supplement: kind,
+  figure(
+    metadata((title: title, statement: items.last(), kind: kind)),
+    kind: "theorem", supplement: kind,
     numbering: n => context {
       let o = current-config()
       if o.mode == "report" { chapter-number() + "." + str(n) } else { str(n) }
-    })
+    },
+  )
 }
 #let theorem = statement.with("Theorem")
 #let lemma = statement.with("Lemma")
@@ -31,9 +39,14 @@
   set align(left)
   set text(top-edge: body-top-edge, bottom-edge: body-bottom-edge)
   let data = it.body.value
+  let number = counter(figure.where(kind: "theorem")).display(it.numbering)
+  let title = if present(data.title) { [ (#data.title)] }
   block(breakable: true, above: paragraph-gap, below: paragraph-gap)[
-    #text(font: o.heading-font, size: label-size, weight: "bold", fill: o.accent)[#data.kind #counter(figure.where(kind: "theorem")).display(it.numbering)]#if present(data.title) { [ (#data.title)] }.
-    #if data.kind in ("Theorem", "Lemma", "Proposition", "Corollary") { emph(data.statement) } else { data.statement }
+    #text(font: o.heading-font, size: label-size, weight: "bold", fill: o.accent)[
+      #data.kind #number]#title.
+    #if data.kind in ("Theorem", "Lemma", "Proposition", "Corollary") {
+      emph(data.statement)
+    } else { data.statement }
   ]
 }
 #let proof(body, ..args) = {

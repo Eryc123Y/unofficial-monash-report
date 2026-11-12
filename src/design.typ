@@ -105,7 +105,41 @@
     stroke: hairline + monash-grey-mid,
   ),
 ))
-#let syntax-theme(accent) = bytes("<?xml version=\"1.0\" encoding=\"UTF-8\"?><plist version=\"1.0\"><dict><key>name</key><string>Academic</string><key>settings</key><array><dict><key>settings</key><dict><key>foreground</key><string>" + monash-black.to-hex() + "</string></dict></dict><dict><key>scope</key><string>keyword.control, keyword.declaration, storage.type, storage.modifier</string><key>settings</key><dict><key>foreground</key><string>" + accent.to-hex() + "</string></dict></dict><dict><key>scope</key><string>comment</string><key>settings</key><dict><key>foreground</key><string>" + monash-grey.to-hex() + "</string></dict></dict></array></dict></plist>")
+#let syntax-theme(accent) = {
+  let keyword-scopes = (
+    "keyword.control", "keyword.declaration", "storage.type", "storage.modifier",
+  ).join(", ")
+  let theme = ```xml
+    <?xml version="1.0" encoding="UTF-8"?>
+    <plist version="1.0">
+      <dict>
+        <key>name</key><string>Academic</string>
+        <key>settings</key>
+        <array>
+          <dict>
+            <key>settings</key>
+            <dict><key>foreground</key><string>BODY_COLOUR</string></dict>
+          </dict>
+          <dict>
+            <key>scope</key><string>KEYWORD_SCOPES</string>
+            <key>settings</key>
+            <dict><key>foreground</key><string>ACCENT_COLOUR</string></dict>
+          </dict>
+          <dict>
+            <key>scope</key><string>comment</string>
+            <key>settings</key>
+            <dict><key>foreground</key><string>COMMENT_COLOUR</string></dict>
+          </dict>
+        </array>
+      </dict>
+    </plist>
+  ```.text
+  bytes(theme
+    .replace("KEYWORD_SCOPES", keyword-scopes)
+    .replace("BODY_COLOUR", monash-black.to-hex())
+    .replace("ACCENT_COLOUR", accent.to-hex())
+    .replace("COMMENT_COLOUR", monash-grey.to-hex()))
+}
 
 #let cover-unit-height = 14.625pt
 #let cover-title-inset = 3.5pt
@@ -131,7 +165,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="430" height="168" viewBox="0 0 430 168">
 <title>Schematic nodes expanded against map size</title>
 <path d="M48 12V136H330" fill="none" stroke="#231F20" stroke-width="1"/>
-<path d="M48 132C140 120 230 80 322 18" fill="none" stroke="#231F20" stroke-width="1.5" stroke-dasharray="6 4"/>
+<path d="M48 132C140 120 230 80 322 18" fill="none" stroke="#231F20" stroke-width="1.5"
+  stroke-dasharray="6 4"/>
 <path d="M48 134C150 130 240 116 322 92" fill="none" stroke="#006CAB" stroke-width="2"/>
 <g font-family="STIX Two Text,Libertinus Serif,serif" font-size="13" fill="#231F20">
 <text x="334" y="22">Zero heuristic</text><text x="334" y="96">Manhattan</text>

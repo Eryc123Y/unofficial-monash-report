@@ -12,6 +12,31 @@ for arg in "$@"; do
     *) echo "unknown argument: $arg" >&2; exit 2 ;;
   esac
 done
+# Check every text file in the source trees, including SVG and YAML fixtures.
+# Perl decodes UTF-8 so the width limit counts characters rather than bytes.
+source_files=(lib.typ)
+while IFS= read -r source; do source_files+=("$source"); done < <(
+  find src tests examples template -type f | sort
+)
+if ! perl -CSD -ne '
+  chomp;
+  if (length($_) > 100) {
+    printf "%s:%d: FAIL %d characters (maximum 100)\n", $ARGV, $., length($_);
+    $invalid = 1;
+  }
+  if (eof) {
+    if ($ARGV =~ m{^src/} && $. >= 300) {
+      printf "%s: FAIL %d lines (must be fewer than 300)\n", $ARGV, $.;
+      $invalid = 1;
+    }
+    close ARGV;
+  }
+  END { exit($invalid ? 1 : 0) }
+' "${source_files[@]}"; then
+  exit 1
+fi
+echo "ok    source limits: 100 characters per line; fewer than 300 lines per src file"
+
 package_path="$(mktemp -d)"
 trap 'rm -rf "$package_path"' EXIT
 package_version="$(sed -n 's/^version = "\(.*\)"/\1/p' typst.toml)"
@@ -120,9 +145,6 @@ fi
 [[ "$(wc -c < thumbnail.png)" -le 3145728 ]] || { echo 'FAIL thumbnail size'; exit 1; }
 read -r thumb_width thumb_height <<<"$(file thumbnail.png | sed -nE 's/.*PNG image data, ([0-9]+) x ([0-9]+).*/\1 \2/p')"
 [[ "$thumb_width" -ge 1080 || "$thumb_height" -ge 1080 ]] || { echo 'FAIL thumbnail dimensions'; exit 1; }
-for file in src/*.typ; do
-  [[ "$(wc -l < "$file")" -lt 300 ]] || { echo "FAIL $file exceeds line limit"; exit 1; }
-done
 if rg -n '^#[^i]|^[^#/[:space:]]' lib.typ; then echo 'FAIL lib.typ must only re-export imports'; exit 1; fi
 cp thumbnail.png "$ship_dir/"
 tar -czf "build/unofficial-monash-report-$package_version.tar.gz" -C "$ship_dir" .

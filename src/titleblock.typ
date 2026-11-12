@@ -12,15 +12,39 @@
   items += o.info.filter(present)
   if present(o.logo) or present(o.unit) or present(o.semester) {
     block(width: full, below: title-gap)[
-      #grid(columns: (1fr, 1fr), align: bottom,
-        block(height: assignment-logo-height, if present(o.logo) { context { let height = measure(o.logo).height; if height > zero { let ratio = assignment-logo-height / height * full; scale(x: ratio, y: ratio, reflow: true, o.logo) } else { o.logo } } }),
-        align(right, text(top-edge: body-top-edge, bottom-edge: furniture-bottom-edge, font: o.heading-font, size: furniture-size, fill: monash-grey-dark,
-          (o.unit, o.semester).filter(present).join(linebreak()))))
+      #grid(
+        columns: (1fr, 1fr), align: bottom,
+        block(height: assignment-logo-height, if present(o.logo) {
+          context {
+            let height = measure(o.logo).height
+            if height > zero {
+              let ratio = assignment-logo-height / height * full
+              scale(x: ratio, y: ratio, reflow: true, o.logo)
+            } else { o.logo }
+          }
+        }),
+        align(right, text(
+          top-edge: body-top-edge, bottom-edge: furniture-bottom-edge,
+          font: o.heading-font, size: furniture-size, fill: monash-grey-dark,
+          (o.unit, o.semester).filter(present).join(linebreak()),
+        )),
+      )
     ]
   }
-  block(above: zero, inset: (top: assignment-title-inset), below: if items.len() > 0 { byline-gap } else { zero }, text(top-edge: title-top-edge, bottom-edge: title-bottom-edge, hyphenate: false, font: o.heading-font, size: assignment-title-size, weight: light-weight, fill: o.accent, o.title))
+  block(
+    above: zero, inset: (top: assignment-title-inset),
+    below: if items.len() > 0 { byline-gap } else { zero },
+    text(
+      top-edge: title-top-edge, bottom-edge: title-bottom-edge, hyphenate: false,
+      font: o.heading-font, size: assignment-title-size, weight: light-weight,
+      fill: o.accent, o.title,
+    ),
+  )
   if items.len() > 0 {
-    block(above: zero, below: zero, text(top-edge: body-top-edge, bottom-edge: body-bottom-edge, font: o.heading-font, size: byline-size, fill: monash-grey-dark, items.join([ · ])))
+    block(above: zero, below: zero, text(
+      top-edge: body-top-edge, bottom-edge: body-bottom-edge,
+      font: o.heading-font, size: byline-size, fill: monash-grey-dark, items.join([ · ]),
+    ))
   }
   v(rule-gap)
   notch-rule()

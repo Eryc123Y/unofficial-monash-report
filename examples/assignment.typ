@@ -32,7 +32,9 @@
     $n'$ has a cheapest path of $k - 1$ edges. \
     By
     #ref(<eq-consistency>, supplement: none) and the induction hypothesis,
-    #math.equation(block: true, numbering: none)[$ h(n) <= c(n, n') + h(n') <= c(n, n') + h^*(n') = h^*(n). $]
+    #math.equation(block: true, numbering: none)[
+      $ h(n) <= c(n, n') + h(n') <= c(n, n') + h^*(n') = h^*(n). $
+    ]
   ]
 + Take the path $s -> a -> g$ with both edges of cost 1, and set
   $h(s) = 2$, $h(a) = 0$, $h(g) = 0$. Every value is at most the true remaining

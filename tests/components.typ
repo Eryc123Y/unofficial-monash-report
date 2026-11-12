@@ -6,7 +6,10 @@
   + A nested part
 #lemma[Title][A lemma.] <lem>
 #proof[An argument. $ x=1 $]
-#figure(table(columns: 2, table.header[A][B], [one], [two], [three], [four]), caption: [A table.]) <tab>
+#figure(
+  table(columns: 2, table.header[A][B], [one], [two], [three], [four]),
+  caption: [A table.],
+) <tab>
 #figure(rect(width: diagram-width, height: sample-figure-height), caption: [An image.]) <fig>
 #figure(caption: [A program.])[
 ```python

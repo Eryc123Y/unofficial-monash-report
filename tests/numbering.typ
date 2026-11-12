@@ -2,7 +2,9 @@
 #import "../src/figures.typ": number-at
 #let mode = sys.inputs.at("mode", default: "assignment")
 #let opts = (title: [Numbering], date: none)
-#show: if mode == "report" { report.with(..opts, abstract: [Front matter.], outline: true) } else { assignment.with(..opts) }
+#show: if mode == "report" {
+  report.with(..opts, abstract: [Front matter.], outline: true)
+} else { assignment.with(..opts) }
 = First chapter
 $ x=1 $ <eq-one>
 #figure([First image], caption: [First.]) <fig-one>
@@ -29,11 +31,15 @@ $ x=2 $ <eq-two>
   ) {
     for (target, number) in labels.zip(expected-values) {
       let el = query(target).first()
-      let c = if el.func() == math.equation { counter(math.equation) } else { counter(figure.where(kind: el.kind)) }
+      let c = if el.func() == math.equation {
+        counter(math.equation)
+      } else { counter(figure.where(kind: el.kind)) }
       let actual = number-at((mode: mode), el)
       assert.eq(actual, if el.func() == math.equation { "(" + number + ")" } else { number })
       assert.eq(c.at(el.location()).first(), int(number.split(".").last()), message: repr(target))
-      if mode == "report" { assert.eq(counter(heading).at(el.location()).first(), int(number.split(".").first())) }
+      if mode == "report" {
+        assert.eq(counter(heading).at(el.location()).first(), int(number.split(".").first()))
+      }
     }
   }
   assert.eq(counter(figure.where(kind: "theorem")).at(<thm-two>).first(), 2)
