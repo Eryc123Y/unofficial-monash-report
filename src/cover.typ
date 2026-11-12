@@ -1,0 +1,62 @@
+#import "design.typ": *
+#import "options.typ": present, date-text
+#let cover(o) = {
+  let fields = ()
+  if o.authors.len() == 0 {
+    fields += (("Author", o.author), ("Student ID", o.student-id))
+  }
+  fields += (("Supervisor", o.supervisor), ("Date", date-text(o.date)), ("Word count", o.word-count))
+  fields += o.info
+  fields = fields.filter(pair => present(pair.last()))
+  let bottom-block = [
+    #if o.authors.len() > 0 {
+      let contributions = o.authors.any(person => present(person.at("contribution", default: none)))
+      let cells = ()
+      for person in o.authors {
+        cells += (person.name, person.at("student-id", default: []))
+        if contributions { cells.push(person.at("contribution", default: [])) }
+      }
+      table(columns: if contributions { (1fr, 1fr, 1fr) } else { (1fr, 1fr) },
+        table.header(..("Author", "Student ID", if contributions { "Contribution" }).filter(present).map(emph)),
+        ..cells)
+      if fields.len() > 0 { v(group-gap) }
+    }
+    #if fields.len() > 0 {
+      grid(columns: (field-label-width, 1fr), column-gutter: field-gap, row-gutter: field-row-gap,
+        ..fields.map(pair => (text(style: "italic", fill: monash-grey-dark, pair.first()), [#pair.last()])).flatten())
+    }
+  ]
+  let title-block = [
+    #set par(leading: cover-title-leading, justify: false)
+    #if present(o.unit) {
+      block(below: cover-gap, text(font: o.heading-font, size: unit-size, weight: "bold", fill: o.accent, tracking: unit-tracking, upper(o.unit)))
+    }
+    #block(text(font: o.heading-font, size: cover-title-size, weight: light-weight, fill: o.accent, o.title))
+    #if present(o.subtitle) {
+      v(cover-gap)
+      block(text(size: subtitle-size, style: "italic", fill: monash-grey-dark, o.subtitle))
+    }
+    #v(cover-gap + cover-rule-gap)
+    #notch-rule()
+    #if present(o.doc-type) { v(cover-gap); block(text(size: doc-type-size, o.doc-type)) }
+  ]
+  page(paper: o.paper, margin: (x: margin-x, top: cover-top, bottom: margin-bottom),
+    header: none, footer: none, numbering: none,
+    background: align(bottom, rect(width: full, height: cover-band, fill: o.accent, stroke: none)), [
+      #set par(justify: false)
+      #if present(o.logo) or present(o.faculty) or present(o.semester) {
+        grid(columns: (1fr, 1fr), align: bottom,
+          if present(o.logo) { scale(y: cover-logo-height / measure(o.logo).height, reflow: true, o.logo) },
+          align(right, text(font: o.heading-font, size: furniture-size, fill: monash-grey-dark,
+            (o.faculty, o.semester).filter(present).join(linebreak()))))
+      }
+      #layout(size => {
+        let title-height = measure(block(width: size.width, title-block)).height
+        let fields-height = measure(block(width: size.width, bottom-block)).height
+        let desired = cover-title-top - cover-top
+        let title-y = calc.max(cover-logo-height + cover-gap, calc.min(desired, size.height - title-height - fields-height - group-gap))
+        place(top + left, dy: title-y, block(width: full, title-block))
+        place(bottom + left, block(width: full, bottom-block))
+      })
+    ])
+}
