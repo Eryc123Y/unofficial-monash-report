@@ -1,6 +1,8 @@
 #import "@preview/unofficial-monash-report:0.1.0": *
 
 #show: assignment.with(
+  // Opt into the preferred stacks; missing font families produce warnings.
+  // ..monash-fonts,
   title: [Assignment Title],
   author: [\[Your Name\]],
   student-id: [\[Student ID\]],

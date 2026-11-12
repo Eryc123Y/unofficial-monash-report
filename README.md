@@ -257,13 +257,22 @@ A result.
 
 The public colours are `monash-blue`, `monash-black`, `monash-grey-dark`,
 `monash-grey`, `monash-grey-mid`, `monash-grey-soft`, and `monash-grey-light`.
-`lib.typ` exports only these colours, the two document functions, and the
-components listed above. Importing it changes no document settings.
+The exported names are `assignment`, `report`, `question`, `theorem`, `lemma`,
+`proposition`, `corollary`, `definition`, `example`, `remark`, `proof`, `appendix`,
+the `monash-fonts` dictionary, and the seven colours listed above. Importing
+`lib.typ` changes no document settings.
 Rules placed after the document's `#show:` can override the default styles.
 
 ## Fonts
 
-The preferred fallback lists are:
+Opt into all four preferred stacks with
+`report.with(..monash-fonts, title: [Report Title])`, or spread `..monash-fonts`
+into `assignment.with(...)`. **Typst warns about any listed family that is
+not installed.** This explicit opt-in passes every family through unchanged;
+it does not filter missing fonts.
+
+The exported `monash-fonts` dictionary contains these preferred stacks under
+`font`, `heading-font`, `math-font`, and `code-font`:
 
 | Use | Ordered font families |
 | --- | --- |
@@ -277,8 +286,9 @@ list and exposes no font-enumeration API inside a document. To keep normal
 compilation warning-free, `auto` uses compiler-embedded fonts unless a
 font inventory is supplied. The fallback is Libertinus Serif for body and
 headings, New Computer Modern Math for math, and DejaVu Sans Mono for code.
-The preferred lists are filtered against the supplied inventory, in order;
-no compiler diagnostics are suppressed.
+For `auto`, the preferred lists are filtered against the supplied inventory,
+in order. Explicit font arguments, including `..monash-fonts`, bypass this
+filter. No compiler diagnostics are suppressed.
 
 `scripts/check.sh` supplies the actual inventory from `typst fonts`. For the
 same preferred font selection in your own project:
@@ -327,7 +337,9 @@ scripts/check.sh --ignore-system-fonts
 scripts/check.sh --thumbnail
 ```
 
-Both CI jobs use Typst 0.15.1. The script compiles every document in `tests/`,
+Both CI jobs use Typst 0.15.1. The script enforces a 100-character line limit
+in `lib.typ`, `src/`, `tests/`, `examples/`, and `template/`, plus fewer than
+300 lines per file under `src/`. It compiles every document in `tests/`,
 `examples/`, and `template/`, checks invalid-argument panics, chapter and page
 numbering, extracts and compiles all Typst samples from this README, and
 compiles a fresh `typst init`. `--thumbnail` also regenerates the three README

@@ -3,14 +3,23 @@
 #let documented = (
   "assignment", "report", "question", "theorem", "lemma", "proposition", "corollary",
   "definition", "example", "remark", "proof", "appendix",
-  "monash-blue", "monash-black",
+  "monash-fonts", "monash-blue", "monash-black",
   "monash-grey-dark", "monash-grey", "monash-grey-mid", "monash-grey-soft", "monash-grey-light",
 )
 #assert.eq(dictionary(package).keys().sorted(), documented.sorted())
 #for name in documented {
-  let expected = if name.starts-with("monash-") { color } else { function }
+  let expected = if name == "monash-fonts" {
+    dictionary
+  } else if name.starts-with("monash-") { color } else { function }
   assert.eq(type(dictionary(package).at(name)), expected, message: name)
 }
+#assert.eq(package.monash-fonts, (
+  font: ("STIX Two Text", "Libertinus Serif"),
+  heading-font: ("Helvetica Neue", "Helvetica", "Arial", "Liberation Sans", "Libertinus Serif"),
+  math-font: ("STIX Two Math", "New Computer Modern Math"),
+  code-font: ("JetBrains Mono", "DejaVu Sans Mono"),
+))
+#assert.eq(type(package.report.with(..package.monash-fonts, title: [Preferred Fonts])), function)
 // check.sh also compiles this file once per invalid argument and checks panic text.
 #let bad = sys.inputs.at("bad", default: "none")
 #let mode = sys.inputs.at("mode", default: "assignment")

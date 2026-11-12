@@ -10,6 +10,12 @@
 #let math-fonts = ("STIX Two Math", "New Computer Modern Math")
 #let heading-fonts = ("Helvetica Neue", "Helvetica", "Arial", "Liberation Sans", "Libertinus Serif")
 #let code-fonts = ("JetBrains Mono", "DejaVu Sans Mono")
+#let monash-fonts = (
+  font: body-fonts,
+  heading-font: heading-fonts,
+  math-font: math-fonts,
+  code-font: code-fonts,
+)
 // Typst has no font-enumeration API. Only name families known to be available.
 #let embedded-fonts = ("Libertinus Serif", "New Computer Modern Math", "DejaVu Sans Mono")
 #let available-fonts = sys.inputs.at("monash-fonts", default: "").split("|") + embedded-fonts
