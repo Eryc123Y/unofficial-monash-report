@@ -1,17 +1,17 @@
 #import "design.typ": *
 #import "question.typ": show-question
-#import "theorems.typ": show-statement, chapter-number, chapter-number-at
+#import "theorems.typ": show-statement, chapter-prefixed
 #let numberer(o, n) = context {
-  if o.mode == "report" { chapter-number() + "." + str(n) } else { str(n) }
+  if o.mode == "report" { chapter-prefixed(n, here()) } else { str(n) }
 }
 #let number-at(o, target) = {
   let c = if target.func() == math.equation {
     counter(math.equation)
   } else { counter(figure.where(kind: target.kind)) }
-  let n = str(c.at(target.location()).first())
-  if o.mode == "report" and not (target.func() == figure and target.kind == "question") {
-    n = chapter-number-at(target.location()) + "." + n
-  }
+  let n = c.at(target.location()).first()
+  n = if o.mode == "report" and not (target.func() == figure and target.kind == "question") {
+    chapter-prefixed(n, target.location())
+  } else { str(n) }
   if target.func() == math.equation { "(" + n + ")" } else { n }
 }
 // The width a table needs whatever its cells contain: fixed columns and gutters.

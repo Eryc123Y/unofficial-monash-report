@@ -18,6 +18,10 @@
 - Print dates without a leading zero ("1 November 2026").
 - Let long code lines wrap inside the listing instead of overprinting its
   bottom rule and the text after it.
+- Number figures, tables, listings, equations and theorems from the last
+  numbered chapter. Unnumbered chapters no longer restart numbering or print
+  a wrong prefix (such as 1.1 inside an appendix), and content before the
+  first chapter is numbered 1, 2, ... instead of 0.1, 0.2, ...
 
 ## 0.1.0
 

@@ -3,7 +3,8 @@
   set heading(numbering: "1.1")
   show heading: it => {
     let major = it.level == 1
-    if major and o.mode == "report" {
+    // Only numbered chapters restart numbering; unnumbered ones continue it.
+    if major and o.mode == "report" and it.numbering != none {
       for kind in (image, table, raw, "theorem") {
         counter(figure.where(kind: kind)).update(0)
       }

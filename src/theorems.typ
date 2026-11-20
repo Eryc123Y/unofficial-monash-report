@@ -2,9 +2,11 @@
 #import "options.typ": require, valid-text, present
 #import "page.typ": current-config
 #import "labels.typ": labelled
+// The last numbered chapter at `location`, or none before the first one.
 #let chapter-number-at(location) = {
   let hs = query(heading.where(level: 1).before(location, inclusive: true))
-  if hs.len() == 0 { "0" } else {
+    .filter(h => h.numbering != none)
+  if hs.len() > 0 {
     numbering(
       if hs.last().numbering == "A.1" { "A" } else { "1" },
       counter(heading).at(location).first(),
@@ -12,6 +14,11 @@
   }
 }
 #let chapter-number() = chapter-number-at(here())
+// "2.3" inside chapter 2; just "3" when no numbered chapter precedes.
+#let chapter-prefixed(n, location) = {
+  let chapter = chapter-number-at(location)
+  if chapter == none { str(n) } else { chapter + "." + str(n) }
+}
 #let statement(kind, ..args) = {
   for key in args.named().keys() { panic("unknown argument `" + key + "`") }
   let items = args.pos()
@@ -24,7 +31,7 @@
     kind: "theorem", supplement: _ => context current-config().labels.at(kind),
     numbering: n => context {
       let o = current-config()
-      if o.mode == "report" { chapter-number() + "." + str(n) } else { str(n) }
+      if o.mode == "report" { chapter-prefixed(n, here()) } else { str(n) }
     },
   )
 }
