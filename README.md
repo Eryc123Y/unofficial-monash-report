@@ -165,7 +165,7 @@ These apply to both `assignment` and `report`.
 | `student-id` | `none` | Your student ID. |
 | `unit` | `none` | Unit code and name. Top right on an assignment; the blue line above the title on a report cover. |
 | `semester` | `none` | Shown under the unit (assignment) or at the top right of the cover (report). |
-| `date` | `none` | A `datetime`, or any text. Use `datetime.today()` for today. |
+| `date` | `none` | A `datetime`, or any text. `auto` or `datetime.today()` gives today's date. |
 | `short-title` | `auto` | Text in the running head and footer. `auto` builds it from the unit code and the title. `none` removes it. |
 | `info` | `()` | Extra items. Assignment: an array of content added to the byline. Report: an array of `(label, value)` pairs added to the cover. |
 | `logo` | `none` | Your logo, usually `image("...")`. |

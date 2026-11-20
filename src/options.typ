@@ -50,8 +50,8 @@
     if key in o { require(key, valid-text(o.at(key)), "none, str, or content") }
   }
   require(
-    "date", o.date in (auto, none) or type(o.date) in (datetime, content),
-    "datetime, content, or none",
+    "date", o.date in (auto, none) or type(o.date) in (datetime, str, content),
+    "auto, datetime, str, content, or none",
   )
   require(
     "short-title", o.short-title == auto or valid-text(o.short-title),

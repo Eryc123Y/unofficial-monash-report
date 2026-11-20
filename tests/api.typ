@@ -24,7 +24,7 @@
 #let bad = sys.inputs.at("bad", default: "none")
 #let mode = sys.inputs.at("mode", default: "assignment")
 #let invalid = (
-  title: 42, author: 42, student-id: 42, unit: 42, semester: 42, date: "today",
+  title: 42, author: 42, student-id: 42, unit: 42, semester: 42, date: 42,
   short-title: 42, info: false, logo: "logo.svg", font: 42, heading-font: (42,),
   math-font: false, code-font: (), font-size: -1, accent: "blue", paper: 42, lang: 42,
   labels: false, show-marks: "yes", question-box: "yes",

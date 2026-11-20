@@ -13,6 +13,8 @@
 - Wrap long table cells at the text width. Only tables whose fixed column
   widths exceed the text width are scaled down.
 - Accept a plain string as a `proof` body.
+- Accept a plain string as `date`, as the README promised; document that
+  `date: auto` prints today's date.
 
 ## 0.1.0
 
