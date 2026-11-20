@@ -8,6 +8,8 @@
 - Bump every import, example, test and the starter template to 0.2.0; the
   check script now uses an empty package cache and fails on imports of any
   other version.
+- Fix "cannot join label with content" for a labelled table outside a
+  figure; the label stays queryable.
 
 ## 0.1.0
 

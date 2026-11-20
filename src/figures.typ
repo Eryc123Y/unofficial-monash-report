@@ -34,7 +34,8 @@
     if it.has("label") and it.label == <monash-three-line-table> { it } else {
       let fields = it.fields()
       let children = fields.remove("children")
-      fields.remove("label", default: none)
+      // The label stays on the original element, so it remains queryable and linkable.
+      let _ = fields.remove("label", default: none)
       let styled = [#table(
         ..fields,
         table.hline(stroke: table-rule + monash-black),
