@@ -14,6 +14,18 @@
   }
   if target.func() == math.equation { "(" + n + ")" } else { n }
 }
+// The width a table needs whatever its cells contain: fixed columns and gutters.
+#let fixed-width(table, available) = {
+  let resolve(track) = if type(track) == length { track } else if type(track) == ratio {
+    track * available
+  } else if type(track) == relative { track.ratio * available + track.length } else { zero }
+  let columns = if type(table.columns) == array { table.columns } else { () }
+  let gutter = table.at("column-gutter", default: ())
+  let gutters = if type(gutter) == array { gutter } else {
+    (gutter,) * calc.max(columns.len() - 1, 0)
+  }
+  (columns + gutters).map(resolve).sum(default: zero)
+}
 #let figure-style(o, body) = {
   let figure-numbering = n => numberer(o, n)
   let equation-numbering = n => [(#numberer(o, n))]
@@ -42,10 +54,11 @@
         ..children,
         table.hline(stroke: table-rule + monash-black),
       )<monash-three-line-table>]
+      // Auto and fractional columns wrap their text. Only fixed widths wider than the
+      // text column shrink the whole table.
       layout(size => {
-        let width = measure(styled).width
-        let fitted = if width > size.width {
-          let ratio = size.width / width * full
+        let fitted = if fixed-width(it, size.width) > size.width {
+          let ratio = size.width / measure(styled).width * full
           scale(x: ratio, y: ratio, reflow: true, styled)
         } else { styled }
         align(center, fitted)

@@ -78,7 +78,7 @@ done < <(find tests examples template -type f -name '*.typ' | sort)
 for field in subtitle unit doc-type author student-id supervisor date word-count faculty semester info authors; do
   compile tests/cover-fields.typ "build/cover-$field.pdf" --input "field=$field"
 done
-for file in no-logo logo stress numbering table-label; do
+for file in no-logo logo stress numbering table-label table-wrap; do
   compile "tests/$file.typ" "build/$file-report.pdf" --input mode=report
 done
 # Exercise label overrides and both question flags in both document modes.

@@ -10,6 +10,8 @@
   other version.
 - Fix "cannot join label with content" for a labelled table outside a
   figure; the label stays queryable.
+- Wrap long table cells at the text width. Only tables whose fixed column
+  widths exceed the text width are scaled down.
 
 ## 0.1.0
 
