@@ -9,8 +9,11 @@
     top-edge: body-top-edge, bottom-edge: body-bottom-edge,
   )
   set par(justify: true, first-line-indent: zero, leading: body-leading, spacing: paragraph-gap)
-  set list(marker: rect(
-    width: square-bullet-size, height: square-bullet-size, fill: monash-black, stroke: none,
+  // The marker is an inline box shifted onto the x-height. A bare `rect` would sit at the
+  // top of the line box, which `body-top-edge` makes a full em above the baseline.
+  set list(marker: box(
+    width: square-bullet-size, height: square-bullet-size, fill: monash-black,
+    baseline: square-bullet-baseline,
   ))
   set enum(full: true, numbering: (..numbers) => {
     text(

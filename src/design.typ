@@ -94,6 +94,7 @@
 #let code-inset = (x: 6pt, y: 7.5pt)
 #let code-number-gap = 12pt
 #let square-bullet-size = 3pt
+#let square-bullet-baseline = -0.22em
 #let footnote-rule-width = 90pt
 // Internal example/test geometry also uses these tokens.
 #let diagram-width = 322.5pt

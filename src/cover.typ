@@ -27,16 +27,19 @@
     #set text(size: field-size)
     #set par(leading: body-leading)
     #if o.authors.len() > 0 {
+      let ids = o.authors.any(person => present(person.at("student-id", default: none)))
       let contributions = o.authors.any(person => present(person.at("contribution", default: none)))
       let cells = ()
       for person in o.authors {
-        cells += (person.name, person.at("student-id", default: []))
+        cells.push(person.name)
+        if ids { cells.push(person.at("student-id", default: [])) }
         if contributions { cells.push(person.at("contribution", default: [])) }
       }
-      let headers = (o.labels.author, o.labels.student-id)
+      let headers = (o.labels.author,)
+      if ids { headers.push(o.labels.student-id) }
       if contributions { headers.push(o.labels.contribution) }
       table(
-        align: left, columns: if contributions { (1fr, 1fr, 1fr) } else { (1fr, 1fr) },
+        align: left, columns: (1fr,) * headers.len(),
         table.header(..headers.map(emph)),
         ..cells,
       )
