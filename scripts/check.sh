@@ -43,6 +43,15 @@ package_version="$(sed -n 's/^version = "\(.*\)"/\1/p' typst.toml)"
 mkdir -p "$package_path/preview/unofficial-monash-report"
 ln -s "$PWD" "$package_path/preview/unofficial-monash-report/$package_version"
 export TYPST_PACKAGE_PATH="$package_path"
+# An empty cache stops imports from silently resolving to a published release.
+mkdir -p "$package_path/cache"
+export TYPST_PACKAGE_CACHE_PATH="$package_path/cache"
+# Every package import must name the version being built.
+if rg -n 'unofficial-monash-report:[0-9]' tests examples template README.md \
+  | rg -v "unofficial-monash-report:$package_version\b"; then
+  echo "FAIL  imports must use version $package_version"
+  exit 1
+fi
 mkdir -p build
 # Typst cannot enumerate fonts inside a document. Supply the actual font list,
 # so unavailable fallback families are never passed to text(). No warning filters.

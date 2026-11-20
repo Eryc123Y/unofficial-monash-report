@@ -1,4 +1,4 @@
-#import "@preview/unofficial-monash-report:0.1.0": *
+#import "@preview/unofficial-monash-report:0.2.0": *
 #import "../src/design.typ": alternate-accent
 #show: report.with(title: [Accent Override], accent: alternate-accent, outline: true,
   abstract: [All accent elements use the supplied colour.])

@@ -1,4 +1,4 @@
-#import "@preview/unofficial-monash-report:0.1.0": *
+#import "@preview/unofficial-monash-report:0.2.0": *
 #show: report.with(outline: true,title: [Long Contents], date: none, abstract: [#lorem(400)])
 #for n in range(1, 25) [
   = A chapter title that is long enough to wrap across multiple lines in the contents: example #n

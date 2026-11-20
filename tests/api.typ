@@ -1,4 +1,4 @@
-#import "@preview/unofficial-monash-report:0.1.0" as package
+#import "@preview/unofficial-monash-report:0.2.0" as package
 #import "../src/design.typ": invalid-relative-size
 #let documented = (
   "assignment", "report", "question", "theorem", "lemma", "proposition", "corollary",

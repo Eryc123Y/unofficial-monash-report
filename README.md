@@ -11,20 +11,20 @@ by Monash University, and it does not include the Monash logo. See
 
 | Assignment | Report cover | Report body |
 | --- | --- | --- |
-| ![First page of an assignment: blue title, a question in a grey box, a lemma and its proof.](https://raw.githubusercontent.com/Eryc123Y/unofficial-monash-report/v0.1.0/docs/preview/assignment.png) | ![Report cover: unit line, large blue title, subtitle, and author details at the bottom.](https://raw.githubusercontent.com/Eryc123Y/unofficial-monash-report/v0.1.0/docs/preview/report-cover.png) | ![Report page: a numbered chapter with an equation, a definition and a figure.](https://raw.githubusercontent.com/Eryc123Y/unofficial-monash-report/v0.1.0/docs/preview/report-body.png) |
+| ![First page of an assignment: blue title, a question in a grey box, a lemma and its proof.](https://raw.githubusercontent.com/Eryc123Y/unofficial-monash-report/v0.2.0/docs/preview/assignment.png) | ![Report cover: unit line, large blue title, subtitle, and author details at the bottom.](https://raw.githubusercontent.com/Eryc123Y/unofficial-monash-report/v0.2.0/docs/preview/report-cover.png) | ![Report page: a numbered chapter with an equation, a definition and a figure.](https://raw.githubusercontent.com/Eryc123Y/unofficial-monash-report/v0.2.0/docs/preview/report-body.png) |
 
 ## Quick start
 
 Create a project from the template:
 
 ```sh
-typst init @preview/unofficial-monash-report:0.1.0 my-assignment
+typst init @preview/unofficial-monash-report:0.2.0 my-assignment
 ```
 
 Or start from scratch. An assignment:
 
 ```typst
-#import "@preview/unofficial-monash-report:0.1.0": *
+#import "@preview/unofficial-monash-report:0.2.0": *
 
 #show: assignment.with(
   title: [Assignment 2: Informed Search],
@@ -42,7 +42,7 @@ Or start from scratch. An assignment:
 A report:
 
 ```typst
-#import "@preview/unofficial-monash-report:0.1.0": *
+#import "@preview/unofficial-monash-report:0.2.0": *
 
 #show: report.with(
   title: [Heuristic Search for Warehouse Robot Routing],
@@ -93,7 +93,7 @@ Three more controls:
   grey box.
 
 ```typst
-#import "@preview/unofficial-monash-report:0.1.0": *
+#import "@preview/unofficial-monash-report:0.2.0": *
 
 #show: assignment.with(
   title: [Problem Set 3],
@@ -138,7 +138,7 @@ you are responsible for having the right to use it.
 3. Add one line to the show rule:
 
 ```typst
-#import "@preview/unofficial-monash-report:0.1.0": *
+#import "@preview/unofficial-monash-report:0.2.0": *
 
 #show: assignment.with(
   title: [Assignment Title],
@@ -201,7 +201,7 @@ These apply to both `assignment` and `report`.
 A group report:
 
 ```typst
-#import "@preview/unofficial-monash-report:0.1.0": *
+#import "@preview/unofficial-monash-report:0.2.0": *
 
 #show: report.with(
   title: [Group Report],
@@ -227,7 +227,7 @@ grey box. Numbering is automatic. Write your answer after it; a numbered list
 gives parts `(a)`, `(b)`, and a nested list gives `(i)`, `(ii)`.
 
 ```typst
-#import "@preview/unofficial-monash-report:0.1.0": *
+#import "@preview/unofficial-monash-report:0.2.0": *
 
 #show: assignment.with(title: [Questions])
 
@@ -257,7 +257,7 @@ This question has no statement and continues the numbering from 5. See @q-claim.
 can be referenced. `proof` ends with a square at the right.
 
 ```typst
-#import "@preview/unofficial-monash-report:0.1.0": *
+#import "@preview/unofficial-monash-report:0.2.0": *
 
 #show: assignment.with(title: [A Result])
 
@@ -276,7 +276,7 @@ caption above. Code blocks get line numbers. To caption and reference a code
 listing, wrap it in `figure`.
 
 ````typst
-#import "@preview/unofficial-monash-report:0.1.0": *
+#import "@preview/unofficial-monash-report:0.2.0": *
 
 #show: report.with(title: [Results])
 
@@ -311,7 +311,7 @@ In a report, put appendix chapters inside `appendix`. They are lettered A, B,
 and their equations and figures are numbered A.1, A.2.
 
 ```typst
-#import "@preview/unofficial-monash-report:0.1.0": *
+#import "@preview/unofficial-monash-report:0.2.0": *
 
 #show: report.with(title: [Report with an Appendix])
 
@@ -341,7 +341,7 @@ The intended look uses Helvetica Neue for headings and STIX Two for text and
 mathematics. To switch it on, add `..monash-fonts` to the show rule:
 
 ```typ
-#import "@preview/unofficial-monash-report:0.1.0": *
+#import "@preview/unofficial-monash-report:0.2.0": *
 
 #show: assignment.with(
   ..monash-fonts,

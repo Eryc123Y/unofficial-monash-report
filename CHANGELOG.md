@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.0
+
+- Centre list markers on the first line of each item.
+- Hide the Student ID and Contribution columns of the author table when no
+  author has a value for them.
+- Bump every import, example, test and the starter template to 0.2.0; the
+  check script now uses an empty package cache and fails on imports of any
+  other version.
+
 ## 0.1.0
 
 - Initial assignment and report templates for Typst 0.15.

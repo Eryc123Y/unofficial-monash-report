@@ -1,4 +1,4 @@
-#import "@preview/unofficial-monash-report:0.1.0": *
+#import "@preview/unofficial-monash-report:0.2.0": *
 #show: report.with(
   title: [Group Report], unit: "UNIT0000 · Example Unit", doc-type: [Final Report],
   authors: (

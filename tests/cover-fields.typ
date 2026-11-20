@@ -1,4 +1,4 @@
-#import "@preview/unofficial-monash-report:0.1.0": *
+#import "@preview/unofficial-monash-report:0.2.0": *
 #let field = sys.inputs.at("field", default: "subtitle")
 #let values = (
   subtitle: [Subtitle], unit: [Unit], doc-type: [Report], author: [\[Your Name\]],

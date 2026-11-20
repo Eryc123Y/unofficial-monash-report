@@ -1,4 +1,4 @@
-#import "@preview/unofficial-monash-report:0.1.0": *
+#import "@preview/unofficial-monash-report:0.2.0": *
 #import "../src/figures.typ": number-at
 #let mode = sys.inputs.at("mode", default: "assignment")
 #let opts = (title: [Numbering], date: none)

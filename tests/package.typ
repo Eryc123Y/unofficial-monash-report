@@ -1,7 +1,8 @@
 // Locally checkable Universe manifest and template requirements.
 #let manifest = toml("../typst.toml")
 #assert.eq(manifest.package.name, "unofficial-monash-report")
-#assert.eq(manifest.package.version, "0.1.0")
+#let version = manifest.package.version
+#assert.eq(version, "0.2.0")
 #assert.eq(manifest.package.authors, ("EY2234 <@Eryc123Y>",))
 #assert.eq(manifest.package.compiler, "0.15.0")
 #assert.eq(manifest.package.entrypoint, "lib.typ")
@@ -14,5 +15,7 @@
 #assert.eq(manifest.template.entrypoint, "main.typ")
 #assert.eq(manifest.template.thumbnail, "thumbnail.png")
 #assert(read("../LICENSE").starts-with("MIT License"))
-#assert(read("../template/main.typ").contains("@preview/unofficial-monash-report:0.1.0"))
+#let import-spec = "@preview/unofficial-monash-report:" + version
+#assert(read("../template/main.typ").contains(import-spec))
+#assert(read("../README.md").contains(import-spec))
 Manifest and template metadata are valid.

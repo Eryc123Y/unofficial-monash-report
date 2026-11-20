@@ -1,4 +1,4 @@
-#import "@preview/unofficial-monash-report:0.1.0" as package
+#import "@preview/unofficial-monash-report:0.2.0" as package
 #import "../src/design.typ": box-inset, zero, monash-grey-light
 #let mode = sys.inputs.at("mode", default: "assignment")
 #let hidden = sys.inputs.at("hidden", default: "false") == "true"

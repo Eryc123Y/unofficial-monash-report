@@ -1,4 +1,4 @@
-#import "@preview/unofficial-monash-report:0.1.0": *
+#import "@preview/unofficial-monash-report:0.2.0": *
 
 #show: assignment.with(
   // Opt into the preferred stacks; missing font families produce warnings.

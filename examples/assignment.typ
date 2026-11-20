@@ -1,4 +1,4 @@
-#import "@preview/unofficial-monash-report:0.1.0": *
+#import "@preview/unofficial-monash-report:0.2.0": *
 #import "../src/design.typ": example-table-width
 #show: assignment.with(
   logo: image("../tests/assets/placeholder.svg"),

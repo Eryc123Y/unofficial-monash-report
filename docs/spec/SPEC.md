@@ -36,7 +36,7 @@ Model the layout on `unofficial-monash-slides-typst` (same author). Read its
 README before starting, and follow the same conventions.
 
 ```
-typst.toml            name "unofficial-monash-report", version "0.1.0",
+typst.toml            name "unofficial-monash-report", version "0.2.0",
                       compiler "0.15.0", license MIT, categories ["report"],
                       exclude docs, examples, scripts, tests, .github
 lib.typ               public entrypoint: re-exports only
@@ -54,7 +54,7 @@ src/                  one concern per file, each under 300 lines
   code.typ            code blocks
   assignment.typ      the `assignment` show-rule function
   report.typ          the `report` show-rule function
-template/main.typ     starter document, imports `@preview/unofficial-monash-report:0.1.0`
+template/main.typ     starter document, imports `@preview/unofficial-monash-report:0.2.0`
 template/assets/README.md   tells the user where to put their logo
 examples/             assignment.typ, report.typ, group-report.typ
 tests/                see section 8

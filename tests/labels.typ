@@ -1,4 +1,4 @@
-#import "@preview/unofficial-monash-report:0.1.0" as package
+#import "@preview/unofficial-monash-report:0.2.0" as package
 #import "../src/labels.typ": default-labels
 #let mode = sys.inputs.at("mode", default: "assignment")
 #let group = sys.inputs.at("group", default: "false") == "true"

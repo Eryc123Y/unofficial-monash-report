@@ -1,4 +1,4 @@
-#import "@preview/unofficial-monash-report:0.1.0": *
+#import "@preview/unofficial-monash-report:0.2.0": *
 #import "../src/design.typ": *
 #show: assignment.with(title: [Components])
 #question(marks: 10)[Statement.] <q>

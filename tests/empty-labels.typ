@@ -1,4 +1,4 @@
-#import "@preview/unofficial-monash-report:0.1.0" as package
+#import "@preview/unofficial-monash-report:0.2.0" as package
 #let mode = sys.inputs.at("mode", default: "assignment")
 #let options = {
   let options = (

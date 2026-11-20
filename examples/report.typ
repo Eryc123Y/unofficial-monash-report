@@ -1,4 +1,4 @@
-#import "@preview/unofficial-monash-report:0.1.0": *
+#import "@preview/unofficial-monash-report:0.2.0": *
 #import "../src/design.typ": diagram-width, diagram-height, schematic-svg
 
 #show: report.with(outline: true,
