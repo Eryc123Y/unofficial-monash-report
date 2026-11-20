@@ -159,6 +159,8 @@
 
 #let example-table-width = 80%
 #let code-top-edge = 1em
+// Space below each code line: lines sit 14.4pt apart at the 9pt code size.
+#let code-line-gap = .6em
 #let code-bottom-edge = .6em
 
 #let line-tail-space = 6.75pt
