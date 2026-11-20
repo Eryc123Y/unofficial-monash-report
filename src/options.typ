@@ -19,18 +19,26 @@
 #let require(name, condition, expected) = if not condition {
   panic("`" + name + "` must be " + expected)
 }
-#let plain(value) = if value == none {
+#let plain-text(value) = if value == none {
   ""
 } else if type(value) == str {
   value
+} else if value.func() in ([ ].func(), linebreak, parbreak) {
+  " "
+} else if value.func() == smartquote {
+  if value.double { "\"" } else { "'" }
 } else if value.has("text") {
   value.text
 } else if value.has("children") {
-  value.children.map(plain).join()
+  value.children.map(plain-text).join(default: "")
 } else if value.has("body") {
-  plain(value.body)
+  plain-text(value.body)
 } else {
   ""
+}
+// Text content as a string; spaces and manual line breaks become single spaces.
+#let plain(value) = {
+  plain-text(value).split(regex("\\s+")).filter(word => word != "").join(" ", default: "")
 }
 #let validate(mode, args) = {
   let base = defaults(mode)

@@ -23,6 +23,8 @@
   a wrong prefix (such as 1.1 inside an appendix), and content before the
   first chapter is numbered 1, 2, ... instead of 0.1, 0.2, ...
 - Restart custom figure kinds (such as `kind: "algo"`) in every chapter.
+- Keep word spaces in the automatic short title and turn manual line breaks
+  in the title into spaces.
 
 ## 0.1.0
 
