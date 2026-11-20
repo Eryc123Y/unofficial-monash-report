@@ -32,6 +32,8 @@
   title become spaces there.
 - Use `short-title` for the right-hand running head of a report, as the
   README describes (it previously showed the full title).
+- Skip outline titles ("Contents", "List of Figures") when choosing the
+  chapter for the running head.
 
 ## 0.1.0
 

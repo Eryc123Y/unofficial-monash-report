@@ -63,10 +63,16 @@
   }
 }
 // The level-1 heading named in the running head at `location`: the first on that
-// page, else the last before it.
+// page, else the last before it. Outline titles (such as "Contents") are skipped.
 #let current-chapter(location) = {
+  let titles = query(outline).filter(item => item.title != none).map(item => {
+    query(heading.where(level: 1).after(item.location())).at(0, default: none)
+  }).filter(item => (
+    item != none and not item.outlined
+  )).map(item => item.location())
   let headings = query(heading.where(level: 1))
     .filter(item => item.location().page() <= location.page())
+    .filter(item => item.location() not in titles)
   let on-page = headings.filter(item => item.location().page() == location.page())
   if on-page.len() > 0 { on-page.first() } else { headings.at(-1, default: none) }
 }

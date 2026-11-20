@@ -1,4 +1,4 @@
-// Running heads and footers stay on one line.
+// Running heads and footers stay on one line, and outline titles never name a page.
 #import "@preview/unofficial-monash-report:0.2.0": *
 #import "../src/page.typ": furniture, current-chapter
 #let mode = sys.inputs.at("mode", default: "assignment")
@@ -25,6 +25,9 @@ Text before the first chapter.
   ) {
     let height = measure(block(width: width, furniture(o, left, right))).height
     assert.eq(height, one, message: "furniture wrapped onto a second line")
+  }
+  if mode == "report" {
+    assert.eq(current-chapter(locate(<before-chapters>)), none)
   }
 }
 #pagebreak()
