@@ -131,7 +131,7 @@
   o
 }
 #let date-text(date) = if type(date) == datetime {
-  date.display("[day] [month repr:long] [year]")
+  date.display("[day padding:none] [month repr:long] [year]")
 } else {
   date
 }
