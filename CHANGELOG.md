@@ -25,6 +25,8 @@
 - Restart custom figure kinds (such as `kind: "algo"`) in every chapter.
 - Keep word spaces in the automatic short title and turn manual line breaks
   in the title into spaces.
+- Number entries in a list of figures, tables or listings at the element,
+  so they no longer all read "Figure 0.1".
 
 ## 0.1.0
 

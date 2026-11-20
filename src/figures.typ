@@ -14,6 +14,17 @@
   } else { str(n) }
   if target.func() == math.equation { "(" + n + ")" } else { n }
 }
+#let default-supplement(o, target) = if target.func() == figure and target.kind == "question" {
+  o.labels.question
+} else if target.func() == figure and target.kind == "theorem" {
+  o.labels.at(target.body.value.kind)
+} else { target.supplement }
+// Outline prefix, such as "Figure 2.1", numbered at the element rather than the outline.
+#let entry-prefix(o, target) = {
+  let supplement = default-supplement(o, target)
+  let number = number-at(o, target)
+  if supplement in (none, [], "") { [#number] } else { [#supplement #number] }
+}
 // The width a table needs whatever its cells contain: fixed columns and gutters.
 #let fixed-width(table, available) = {
   let resolve(track) = if type(track) == length { track } else if type(track) == ratio {
@@ -93,31 +104,28 @@
     }
     it.body
   }
-  // Native ref evaluates contextual numbering at the reference location.
+  // Native ref and outline entries evaluate contextual numbering where they appear.
   // Resolve both counters at the target, including references across chapters.
+  let ours(target) = target != none and (
+    target.func() == math.equation and target.numbering == equation-numbering
+    or target.func() == figure and (
+      target.kind in ("theorem", "question") or target.numbering == figure-numbering
+    )
+  )
   show ref: it => context {
     let targets = query(it.target)
     let target = targets.at(0, default: none)
-    let ours = target != none and (
-      target.func() == math.equation and target.numbering == equation-numbering
-      or target.func() == figure and (
-        target.kind in ("theorem", "question") or target.numbering == figure-numbering
-      )
-    )
-    if it.form == "normal" and targets.len() == 1 and ours {
-      let supplement = if it.supplement == auto {
-        if target.func() == figure and target.kind == "question" {
-          o.labels.question
-        } else if target.func() == figure and target.kind == "theorem" {
-          o.labels.at(target.body.value.kind)
-        } else { target.supplement }
-      } else if type(it.supplement) == function {
-        it.supplement(target)
-      } else { it.supplement }
+    if it.form == "normal" and targets.len() == 1 and ours(target) {
+      let supplement = if it.supplement == auto { default-supplement(o, target) } else if (
+        type(it.supplement) == function
+      ) { it.supplement(target) } else { it.supplement }
       let prefix = if supplement != none and supplement != [] { [#supplement~] } else { [] }
       link(target.location(), [#prefix#number-at(o, target)])
     } else { it }
   }
+  show outline.entry: it => if ours(it.element) and it.element.numbering != none {
+    link(it.element.location(), it.indented(entry-prefix(o, it.element), it.inner()))
+  } else { it }
   show figure.where(kind: "question"): show-question
   show figure.where(kind: "theorem"): show-statement
   body
