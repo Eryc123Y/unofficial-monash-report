@@ -12,6 +12,7 @@
   figure; the label stays queryable.
 - Wrap long table cells at the text width. Only tables whose fixed column
   widths exceed the text width are scaled down.
+- Accept a plain string as a `proof` body.
 
 ## 0.1.0
 

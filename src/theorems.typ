@@ -54,6 +54,7 @@
   require("body", args.pos().len() == 0, "one body")
   for key in args.named().keys() { panic("unknown argument `" + key + "`") }
   require("body", type(body) in (str, content), "str or content")
+  let body = if type(body) == str { [#body] } else { body }
   context {
     let o = current-config()
     let prefix = if present(o.labels.proof) { [#emph[#o.labels.proof.] ] }
