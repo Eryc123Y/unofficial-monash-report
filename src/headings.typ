@@ -5,8 +5,13 @@
     let major = it.level == 1
     // Only numbered chapters restart numbering; unnumbered ones continue it.
     if major and o.mode == "report" and it.numbering != none {
-      for kind in (image, table, raw, "theorem") {
-        counter(figure.where(kind: kind)).update(0)
+      // Reset every figure kind in the document, including custom ones. Questions
+      // keep counting across chapters.
+      context {
+        let kinds = (image, table, raw, "theorem") + query(figure).map(f => f.kind)
+        for kind in kinds.dedup().filter(kind => kind != "question") {
+          counter(figure.where(kind: kind)).update(0)
+        }
       }
       counter(math.equation).update(0)
     }

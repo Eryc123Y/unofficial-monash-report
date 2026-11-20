@@ -22,6 +22,7 @@
   numbered chapter. Unnumbered chapters no longer restart numbering or print
   a wrong prefix (such as 1.1 inside an appendix), and content before the
   first chapter is numbered 1, 2, ... instead of 0.1, 0.2, ...
+- Restart custom figure kinds (such as `kind: "algo"`) in every chapter.
 
 ## 0.1.0
 
