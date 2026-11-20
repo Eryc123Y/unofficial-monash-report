@@ -23,7 +23,7 @@
   ""
 } else if type(value) == str {
   value
-} else if value.func() in ([ ].func(), linebreak, parbreak) {
+} else if value.func() in ([ ].func(), linebreak, parbreak, h) {
   " "
 } else if value.func() == smartquote {
   if value.double { "\"" } else { "'" }

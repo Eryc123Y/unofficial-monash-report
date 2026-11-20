@@ -27,6 +27,11 @@
   in the title into spaces.
 - Number entries in a list of figures, tables or listings at the element,
   so they no longer all read "Figure 0.1".
+- Keep each side of the running head and footer on one line, without
+  hyphenation; overlong text ends with an ellipsis. Manual line breaks in the
+  title become spaces there.
+- Use `short-title` for the right-hand running head of a report, as the
+  README describes (it previously showed the full title).
 
 ## 0.1.0
 
