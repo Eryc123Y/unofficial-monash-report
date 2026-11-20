@@ -34,6 +34,8 @@
   README describes (it previously showed the full title).
 - Skip outline titles ("Contents", "List of Figures") when choosing the
   chapter for the running head.
+- Scale a very wide logo down to its column on the cover and the assignment
+  title block instead of letting it run off the page.
 
 ## 0.1.0
 

@@ -1,6 +1,7 @@
 #import "design.typ": *
 #import "options.typ": present, date-text
 #import "labels.typ": labelled
+#import "cover.typ": logo-box
 #let titleblock(o) = {
   set text(top-edge: compact-top-edge, bottom-edge: zero)
   set par(justify: false, leading: title-leading)
@@ -16,13 +17,7 @@
       #grid(
         columns: (1fr, 1fr), align: bottom,
         block(height: assignment-logo-height, if present(o.logo) {
-          context {
-            let height = measure(o.logo).height
-            if height > zero {
-              let ratio = assignment-logo-height / height * full
-              scale(x: ratio, y: ratio, reflow: true, o.logo)
-            } else { o.logo }
-          }
+          logo-box(o.logo, assignment-logo-height)
         }),
         align(right, text(
           top-edge: body-top-edge, bottom-edge: furniture-bottom-edge,

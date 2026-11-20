@@ -12,6 +12,14 @@
   }
   block(width: high + hairline, body)
 })
+// The logo at `height`, or narrower when that would overflow its column.
+#let logo-box(logo, height) = layout(size => {
+  let natural = measure(logo)
+  if natural.height > zero and natural.width > zero {
+    let ratio = calc.min(height / natural.height, size.width / natural.width)
+    scale(x: ratio * full, y: ratio * full, reflow: true, logo)
+  } else { logo }
+})
 #let cover(o) = {
   let fields = ()
   if o.authors.len() == 0 {
@@ -93,15 +101,7 @@
         #if present(o.logo) or present(o.faculty) or present(o.semester) {
           place(top + left, grid(
             columns: (1fr, 1fr), align: bottom,
-            if present(o.logo) {
-              context {
-                let height = measure(o.logo).height
-                if height > zero {
-                  let ratio = cover-logo-height / height * full
-                  scale(x: ratio, y: ratio, reflow: true, o.logo)
-                } else { o.logo }
-              }
-            },
+            if present(o.logo) { logo-box(o.logo, cover-logo-height) },
             align(right, text(
               font: o.heading-font, size: furniture-size, fill: monash-grey-dark,
               (o.faculty, o.semester).filter(present).join(linebreak()),
