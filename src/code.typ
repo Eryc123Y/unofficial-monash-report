@@ -9,10 +9,11 @@
     #set text(
       font: o.code-font, top-edge: code-top-edge, bottom-edge: code-bottom-edge, size: code-size,
     )
-    #set par(justify: false, leading: code-leading)
+    // The text edges make every line, wrapped or not, exactly one code line high.
+    // Rows grow with wrapped lines; the line number keeps empty lines at full height.
+    #set par(justify: false, leading: zero)
     #grid(
-      columns: (auto, 1fr), column-gutter: code-number-gap,
-      row-gutter: zero, rows: code-line-height,
+      columns: (auto, 1fr), column-gutter: code-number-gap, row-gutter: zero,
       ..it.lines.map(l => (
         align(right, text(
           font: o.code-font, size: code-size, fill: monash-grey, str(l.number),

@@ -44,7 +44,6 @@
 #let compact-top-edge = .7em
 #let first-page-top = 42pt
 #let paragraph-gap = 9.75pt
-#let code-leading = .9em
 #let zero = 0pt
 #let full = 100%
 #let margin-x = 25mm
@@ -159,7 +158,6 @@
 #let question-heading-gap = 15.75pt
 
 #let example-table-width = 80%
-#let code-line-height = 14.4pt
 #let code-top-edge = 1em
 #let code-bottom-edge = .6em
 

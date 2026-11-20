@@ -16,6 +16,8 @@
 - Accept a plain string as `date`, as the README promised; document that
   `date: auto` prints today's date.
 - Print dates without a leading zero ("1 November 2026").
+- Let long code lines wrap inside the listing instead of overprinting its
+  bottom rule and the text after it.
 
 ## 0.1.0
 
