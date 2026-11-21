@@ -71,10 +71,15 @@
     #set par(leading: cover-title-leading, justify: false, linebreaks: "optimized")
     #set text(hyphenate: false)
     #if present(o.unit) {
-      block(height: cover-unit-height, below: cover-gap, text(
+      let unit = text(
         font: o.heading-font, size: unit-size, weight: "bold", fill: o.accent,
         tracking: unit-tracking, upper(o.unit),
-      ))
+      )
+      // At least the mock's one-line height; a wrapped unit pushes the title down.
+      block(below: cover-gap, layout(size => {
+        let height = measure(block(width: size.width, unit)).height
+        block(height: calc.max(height, cover-unit-height), unit)
+      }))
     }
     #block(inset: (top: cover-title-inset), balanced(text(
       font: o.heading-font, size: cover-title-size, weight: light-weight, fill: o.accent,
@@ -97,29 +102,35 @@
     [
       #set par(justify: false)
       #set text(top-edge: compact-top-edge, bottom-edge: zero)
-      #block(width: full, height: full)[
-        #if present(o.logo) or present(o.faculty) or present(o.semester) {
-          place(top + left, grid(
-            columns: (1fr, 1fr), align: bottom,
-            if present(o.logo) { logo-box(o.logo, cover-logo-height) },
-            align(right, text(
-              font: o.heading-font, size: furniture-size, fill: monash-grey-dark,
-              (o.faculty, o.semester).filter(present).join(linebreak()),
-            )),
-          ))
+      #if present(o.logo) or present(o.faculty) or present(o.semester) {
+        place(top + left, grid(
+          columns: (1fr, 1fr), align: bottom,
+          if present(o.logo) { logo-box(o.logo, cover-logo-height) },
+          align(right, text(
+            font: o.heading-font, size: furniture-size, fill: monash-grey-dark,
+            (o.faculty, o.semester).filter(present).join(linebreak()),
+          )),
+        ))
+      }
+      #layout(size => {
+        let title-height = measure(block(width: size.width, title-block)).height
+        let fields-height = measure(block(width: size.width, bottom-block)).height
+        let lowest = cover-logo-height + cover-gap
+        let free = size.height - title-height - fields-height - group-gap
+        if free >= lowest {
+          block(width: full, height: size.height, {
+            let title-y = calc.min(cover-title-top - cover-top, free)
+            place(top + left, dy: title-y, block(width: full, title-block))
+            place(top + left, dy: size.height - fields-height, block(width: full, bottom-block))
+          })
+        } else {
+          // No room to pin the details to the bottom: they follow the title instead,
+          // continuing on the next page if they must.
+          v(lowest)
+          block(width: full, below: group-gap, title-block)
+          block(width: full, bottom-block)
         }
-        #layout(size => {
-          let title-height = measure(block(width: size.width, title-block)).height
-          let fields-height = measure(block(width: size.width, bottom-block)).height
-          let desired = cover-title-top - cover-top
-          let title-y = calc.max(
-            cover-logo-height + cover-gap,
-            calc.min(desired, size.height - title-height - fields-height - group-gap),
-          )
-          place(top + left, dy: title-y, block(width: full, title-block))
-          place(top + left, dy: size.height - fields-height, block(width: full, bottom-block))
-        })
-      ]
+      })
     ],
   )
 }

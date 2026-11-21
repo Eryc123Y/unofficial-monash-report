@@ -36,6 +36,10 @@
   chapter for the running head.
 - Scale a very wide logo down to its column on the cover and the assignment
   title block instead of letting it run off the page.
+- Keep the report cover's blocks apart: a unit line that wraps pushes the
+  title down, and when the title and the author details cannot both fit,
+  the details follow the title (continuing on a second cover page if needed)
+  instead of overprinting it.
 
 ## 0.1.0
 
