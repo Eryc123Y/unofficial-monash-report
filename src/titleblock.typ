@@ -20,7 +20,7 @@
           logo-box(o.logo, assignment-logo-height)
         }),
         align(right, text(
-          top-edge: body-top-edge, bottom-edge: furniture-bottom-edge,
+          top-edge: body-top-edge, bottom-edge: furniture-bottom-edge, hyphenate: false,
           font: o.heading-font, size: furniture-size, fill: monash-grey-dark,
           (o.unit, o.semester).filter(present).join(linebreak()),
         )),

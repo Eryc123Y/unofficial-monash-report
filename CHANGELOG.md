@@ -46,6 +46,7 @@
   `bottom`).
 - Keep a gap between a long question title and its marks; the marks sit at
   the top right.
+- Stop hyphenating the unit line in the assignment title block.
 
 ## 0.1.0
 
