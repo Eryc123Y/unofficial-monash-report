@@ -10,8 +10,8 @@
   other version.
 - Fix "cannot join label with content" for a labelled table outside a
   figure; the label stays queryable.
-- Wrap long table cells at the text width. Only tables whose fixed column
-  widths exceed the text width are scaled down.
+- Wrap long table cells at the text width, set ragged rather than justified.
+  Only tables whose fixed column widths exceed the text width are scaled down.
 - Accept a plain string as a `proof` body.
 - Accept a plain string as `date`, as the README promised; document that
   `date: auto` prints today's date.

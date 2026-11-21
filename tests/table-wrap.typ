@@ -1,4 +1,4 @@
-// Long cell text wraps at the column width instead of shrinking the table.
+// Long cell text wraps (ragged) at the column width instead of shrinking the table.
 #import "@preview/unofficial-monash-report:0.2.0": *
 #import "../src/design.typ": test-wide-width, zero
 #let mode = sys.inputs.at("mode", default: "assignment")
@@ -10,6 +10,8 @@
   columns: 2, table.header[Name][Description],
   [#mark("wrap-top")alpha], [#lorem(60)],
   [#mark("wrap-bottom")beta], [short#mark("wrap-right")],
+  // Wrapped cells are set ragged, not justified.
+  [#context assert.eq(par.justify, false)], [],
 )
 #figure(
   table(

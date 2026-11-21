@@ -54,6 +54,7 @@
       size: scaled(o, label-size), hyphenate: false,
       top-edge: body-top-edge, bottom-edge: body-bottom-edge,
     )
+    set par(justify: false)
     if it.has("label") and it.label == <monash-three-line-table> { it } else {
       let fields = it.fields()
       let children = fields.remove("children")
