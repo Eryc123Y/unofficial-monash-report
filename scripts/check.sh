@@ -80,7 +80,7 @@ for field in subtitle unit doc-type author student-id supervisor date word-count
 done
 # Tests that read the `mode` input also run as reports.
 report_tests=(no-logo logo stress numbering table-label table-wrap proof date code-wrap
-  running-heads table-break float-spacing)
+  running-heads table-break float-spacing question-title)
 for file in "${report_tests[@]}"; do
   compile "tests/$file.typ" "build/$file-report.pdf" --input mode=report
 done

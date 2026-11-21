@@ -44,6 +44,8 @@
   above the first part.
 - Leave no extra space behind when a figure floats (`placement: top` or
   `bottom`).
+- Keep a gap between a long question title and its marks; the marks sit at
+  the top right.
 
 ## 0.1.0
 
