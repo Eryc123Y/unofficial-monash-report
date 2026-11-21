@@ -28,22 +28,33 @@
     show outline.entry: it => {
       let major = it.level == 1
       set text(
-        top-edge: body-top-edge, bottom-edge: body-bottom-edge,
+        top-edge: body-top-edge, bottom-edge: body-bottom-edge, hyphenate: false,
         weight: if major { "bold" } else { "regular" },
       )
-      let row = pad(left: if major { zero } else { contents-indent })[
-        #link(it.element.location())[
-          #set text(fill: monash-black)
-          #box(if major { text(fill: o.accent, it.prefix()) } else { it.prefix() })
-          #h(furniture-gap)#it.element.body
-          #if major { h(1fr) } else { box(width: 1fr, text(fill: monash-grey, repeat[.])) }
-          #h(furniture-gap)#it.page()
-        ]
-      ]
+      set par(justify: false)
+      // Number, title and page number in columns: a wrapped title hangs after the
+      // number, and an unnumbered title starts at the margin.
+      let prefix = it.prefix()
+      let numbered = prefix not in (none, [], "")
+      let leader = if major { [] } else { box(width: 1fr, text(fill: monash-grey, repeat[.])) }
+      let cells = (
+        if numbered { (if major { text(fill: o.accent, prefix) } else { prefix },) } else { () }
+      ) + ([#it.element.body #leader], align(bottom, it.page()))
       block(
         above: if major { contents-chapter-gap + contents-entry-gap } else { contents-entry-gap },
         below: zero,
         layout(size => {
+          // Columns are a word space plus the furniture gap apart.
+          let space = measure[x x].width - measure[xx].width
+          let row = pad(left: if major { zero } else { contents-indent })[
+            #link(it.element.location())[
+              #set text(fill: monash-black)
+              #grid(
+                columns: if numbered { (auto, 1fr, auto) } else { (1fr, auto) },
+                column-gutter: furniture-gap + space, ..cells,
+              )
+            ]
+          ]
           let height = calc.max(contents-row-height, measure(block(width: size.width, row)).height)
           block(width: full, height: height, row)
         }),

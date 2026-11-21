@@ -49,6 +49,8 @@
 - Stop hyphenating the unit line in the assignment title block.
 - Put the end-of-proof square on the last line of a proof that ends with a
   list or enum item, and keep it clear of a closing equation's number.
+- Contents: start unnumbered entries (such as References) at the margin,
+  hang wrapped entries after their number, and never hyphenate entries.
 
 ## 0.1.0
 
