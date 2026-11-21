@@ -206,3 +206,5 @@
 #let code-figure-above = 8.25pt
 #let table-caption-gap = 10.5pt
 #let proof-equation-gap = 3.75pt
+// Between a closing display equation (and its number) and the end-of-proof square.
+#let qed-gap = 6pt

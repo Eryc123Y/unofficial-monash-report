@@ -57,6 +57,31 @@
     } else { data.statement }
   ]
 }
+// End `body` with the square on its last line: inside a closing list or enum item,
+// or beside a closing display equation.
+#let with-square(body) = {
+  let children = if body.has("children") { body.children } else { (body,) }
+  while children.len() > 0 and children.last() in ([ ], parbreak()) { children.pop() }
+  let last = children.at(-1, default: none)
+  let rest = children.slice(0, calc.max(children.len() - 1, 0)).join()
+  if type(last) != content {
+    [#body #h(1fr)□]
+  } else if last.func() == math.equation and last.block {
+    [#rest
+      #v(proof-equation-gap)
+      #grid(columns: (1fr, auto), column-gutter: qed-gap, align: horizon, last, [□])]
+  } else if last.func() == list.item {
+    [#rest#list.item(with-square(last.body))]
+  } else if last.func() == enum.item {
+    let number = last.at("number", default: auto)
+    let item = if number == auto { enum.item(with-square(last.body)) } else {
+      enum.item(number, with-square(last.body))
+    }
+    [#rest#item]
+  } else {
+    [#body #h(1fr)□]
+  }
+}
 #let proof(body, ..args) = {
   require("body", args.pos().len() == 0, "one body")
   for key in args.named().keys() { panic("unknown argument `" + key + "`") }
@@ -65,17 +90,6 @@
   context {
     let o = current-config()
     let prefix = if present(o.labels.proof) { [#emph[#o.labels.proof.] ] }
-    let children = if body.has("children") { body.children } else { (body,) }
-    while children.len() > 0 and children.last() in ([ ], parbreak()) { children.pop() }
-    let last = children.at(-1, default: none)
-    if type(last) == content and last.func() == math.equation and last.block {
-      block(breakable: true)[
-        #prefix#children.slice(0, -1).join()
-        #v(proof-equation-gap)
-        #grid(columns: (1fr, auto), align: horizon, last, [□])
-      ]
-    } else {
-      block(breakable: true)[#prefix#body #h(1fr)□]
-    }
+    block(breakable: true)[#prefix#with-square(body)]
   }
 }

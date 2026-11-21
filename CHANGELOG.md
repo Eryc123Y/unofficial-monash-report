@@ -47,6 +47,8 @@
 - Keep a gap between a long question title and its marks; the marks sit at
   the top right.
 - Stop hyphenating the unit line in the assignment title block.
+- Put the end-of-proof square on the last line of a proof that ends with a
+  list or enum item, and keep it clear of a closing equation's number.
 
 ## 0.1.0
 
