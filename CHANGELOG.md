@@ -40,6 +40,8 @@
   title down, and when the title and the author details cannot both fit,
   the details follow the title (continuing on a second cover page if needed)
   instead of overprinting it.
+- Let a long table inside a `figure` break across pages; its caption stays
+  above the first part.
 
 ## 0.1.0
 

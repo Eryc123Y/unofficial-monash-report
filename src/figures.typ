@@ -77,6 +77,8 @@
     }
   }
   show figure.where(kind: table): set figure.caption(position: top)
+  // Long tables continue on the next page; the caption stays above the first part.
+  show figure.where(kind: table): set block(breakable: true)
   show figure.where(kind: table): set figure(gap: table-caption-gap)
   show figure.where(kind: table): it => { v(table-above-extra); it }
   show figure.where(kind: image): it => { v(figure-above-extra); it }
