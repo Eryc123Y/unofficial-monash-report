@@ -34,7 +34,8 @@ listed in `CHANGELOG.md`.
   before the number) needs the equation's own layout.
 - Running heads: overlong text is truncated as plain text, so emphasis or
   maths in a long title or chapter heading is lost in the truncated head;
-  content with no text at all is clipped.
+  content with no text at all is clipped. In a truncated chapter head the
+  12pt gap after the chapter number also becomes a word space.
 - Running heads: an outline's title is recognised as the first level-1 heading
   with `outlined: false` after the outline. An outline with `title: none`
   followed on its page by a user heading with `outlined: false` would hide that
