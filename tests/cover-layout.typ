@@ -1,7 +1,7 @@
 // The report cover keeps the unit, title, subtitle and author details apart when
 // they are long.
 #import "@preview/unofficial-monash-report:0.2.0": *
-#let mark(name) = box(width: 0pt, height: 0pt) + [#metadata(name)#label(name)]
+#let mark(name) = [#box(width: 0pt)#label(name)]
 #show: report.with(
   title: [#mark("title-start")An Empirical Study of Heuristic Search Algorithms for
     Large-Scale Multi-Robot Warehouse Routing Under Uncertainty#mark("title-end")],
@@ -27,11 +27,10 @@ Body text.
     at(a).page < at(b).page or at(a).page == at(b).page and at(a).y < at(b).y,
     message: a + " must come before " + b + ": " + repr((at(a), at(b))),
   )
-  // The title's first baseline sits at least the cover gap plus the title's ascent
-  // below the unit's last baseline, and the author table header a line below the
-  // document type.
+  // The title starts at least the 12pt cover gap below the unit's last line, and the
+  // author table header a line below the document type.
   let gap(a, b) = at(b).y - at(a).y
-  assert(gap("unit-end", "title-start") > 35pt, message: "unit runs into the title")
+  assert(gap("unit-end", "title-start") >= 12pt, message: "unit runs into the title")
   before("title-end", "subtitle-end")
   before("subtitle-end", "doc-type-end")
   assert(

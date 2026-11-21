@@ -4,7 +4,7 @@
 #show: if mode == "report" { report.with(title: [Long tables]) } else {
   assignment.with(title: [Long tables])
 }
-#let mark(name) = [#metadata(name)#label(name)]
+#let mark(name) = [#box(width: 0pt)#label(name)]
 Text before the table.
 #figure(
   table(
