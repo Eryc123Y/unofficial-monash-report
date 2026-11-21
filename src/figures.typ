@@ -51,7 +51,7 @@
   show table.cell: set text(top-edge: body-top-edge, bottom-edge: body-bottom-edge)
   show table: it => {
     set text(
-      size: label-size, hyphenate: false,
+      size: scaled(o, label-size), hyphenate: false,
       top-edge: body-top-edge, bottom-edge: body-bottom-edge,
     )
     if it.has("label") and it.label == <monash-three-line-table> { it } else {
@@ -85,7 +85,7 @@
   show figure.where(kind: table): above(table-above-extra)
   show figure.where(kind: image): above(figure-above-extra)
   show math.equation.where(block: true): it => {
-    set text(size: equation-size)
+    set text(size: scaled(o, equation-size))
     block(
       above: zero, below: zero,
       inset: (
@@ -99,6 +99,7 @@
   show figure.where(kind: raw): above(code-figure-above)
   show figure.caption: it => context {
     set align(center)
+    let caption-size = scaled(o, caption-size)
     set text(size: caption-size, top-edge: body-top-edge, bottom-edge: body-bottom-edge)
     if it.numbering != none {
       let supplement = if it.supplement != none { [#it.supplement ] }

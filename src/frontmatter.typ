@@ -6,7 +6,7 @@
       #if present(o.abstract) {
         if present(o.labels.abstract) {
           align(center, text(
-            font: o.heading-font, size: label-size, weight: "bold", fill: o.accent,
+            font: o.heading-font, size: scaled(o, label-size), weight: "bold", fill: o.accent,
             o.labels.abstract,
           ))
           v(abstract-gap)

@@ -17,7 +17,7 @@
   ))
   set enum(full: true, numbering: (..numbers) => {
     text(
-      font: o.heading-font, size: label-size, weight: "bold", fill: o.accent,
+      font: o.heading-font, size: scaled(o, label-size), weight: "bold", fill: o.accent,
       numbering(
         if calc.rem(numbers.pos().len(), 2) == 1 { "(a)" } else { "(i)" },
         numbers.pos().last(),
@@ -25,7 +25,7 @@
     )
   }, indent: zero, body-indent: part-body-indent)
   show math.equation: set text(font: o.math-font)
-  show footnote.entry: set text(size: footnote-size)
+  show footnote.entry: set text(size: scaled(o, footnote-size))
   set footnote.entry(separator: line(stroke: hairline + monash-black, length: footnote-rule-width))
   show link: set text(fill: o.accent)
   show ref: set text(fill: o.accent)

@@ -37,12 +37,12 @@
       columns: (1fr, auto), column-gutter: number-gap, align: (left, right + top),
       text(
         top-edge: body-top-edge, bottom-edge: zero, font: o.heading-font,
-        size: section-size, weight: "bold", fill: o.accent,
+        size: scaled(o, section-size), weight: "bold", fill: o.accent,
       )[
         #labelled(o.labels.question, number, separator: [ ])#title
       ],
       if o.show-marks and present(data.marks) {
-        text(size: label-size, style: "italic", fill: monash-grey-dark, marks)
+        text(size: scaled(o, label-size), style: "italic", fill: monash-grey-dark, marks)
       },
     ))
   if present(data.statement) {

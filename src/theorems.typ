@@ -50,7 +50,7 @@
   let number = counter(figure.where(kind: "theorem")).display(it.numbering)
   let title = if present(data.title) { [ (#data.title)] }
   block(breakable: true, above: paragraph-gap, below: paragraph-gap)[
-    #text(font: o.heading-font, size: label-size, weight: "bold", fill: o.accent)[
+    #text(font: o.heading-font, size: scaled(o, label-size), weight: "bold", fill: o.accent)[
       #labelled(o.labels.at(data.kind), number, separator: [ ])]#title.
     #if data.kind in ("theorem", "lemma", "proposition", "corollary") {
       emph(data.statement)

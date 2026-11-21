@@ -1,6 +1,7 @@
 #import "design.typ": *
 #let code-style(o, body) = {
   set raw(theme: syntax-theme(o.accent))
+  let code-size = scaled(o, code-size)
   show raw: set text(font: o.code-font, size: code-size)
   show raw.where(block: true): it => block(
     above: paragraph-gap, width: full, breakable: true,

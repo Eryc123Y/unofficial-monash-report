@@ -51,6 +51,10 @@
   list or enum item, and keep it clear of a closing equation's number.
 - Contents: start unnumbered entries (such as References) at the margin,
   hang wrapped entries after their number, and never hyphenate entries.
+- Scale headings, captions, tables, display equations, code, footnotes,
+  theorem and question labels and enum labels with `font-size`. The cover,
+  title block and running heads keep their sizes. At the default 11pt
+  nothing changes.
 
 ## 0.1.0
 

@@ -23,6 +23,9 @@
   stack.filter(family => family in available-fonts)
 }
 #let body-size = 11pt
+// Body-level sizes below are for 11pt text; `scaled` keeps them in proportion to the
+// document's `font-size`. Cover, title block and page furniture stay fixed.
+#let scaled(o, size) = size * (o.at("font-size", default: body-size) / body-size)
 #let cover-title-size = 33pt
 #let assignment-title-size = 22pt
 #let chapter-size = 21pt

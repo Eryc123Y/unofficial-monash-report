@@ -174,7 +174,7 @@ These apply to both `assignment` and `report`.
 | `question-box` | `true` | Whether question statements sit in a grey box. |
 | `accent` | `monash-blue` | The accent colour used throughout. |
 | `font`, `heading-font`, `math-font`, `code-font` | `auto` | Font family, or an array of families. See [Fonts](#fonts). |
-| `font-size` | `11pt` | Body text size. |
+| `font-size` | `11pt` | Body text size. Headings, captions, tables, equations, code and footnotes scale with it; the cover and page furniture do not. |
 | `paper` | `"a4"` | Paper size. The layout is designed for A4. |
 | `lang` | `"en"` | Text language, used for hyphenation. |
 

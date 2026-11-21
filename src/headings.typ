@@ -26,9 +26,9 @@
       #set text(
         font: o.heading-font, top-edge: title-top-edge,
         bottom-edge: if major { title-bottom-edge } else { section-bottom-edge },
-        size: if major { chapter-size } else if it.level == 2 {
+        size: scaled(o, if major { chapter-size } else if it.level == 2 {
           section-size
-        } else { subsection-size },
+        } else { subsection-size }),
         hyphenate: false,
         weight: if major { light-weight } else { "bold" },
         fill: if major { o.accent } else { monash-black },
