@@ -42,6 +42,8 @@
   instead of overprinting it.
 - Let a long table inside a `figure` break across pages; its caption stays
   above the first part.
+- Leave no extra space behind when a figure floats (`placement: top` or
+  `bottom`).
 
 ## 0.1.0
 

@@ -80,8 +80,10 @@
   // Long tables continue on the next page; the caption stays above the first part.
   show figure.where(kind: table): set block(breakable: true)
   show figure.where(kind: table): set figure(gap: table-caption-gap)
-  show figure.where(kind: table): it => { v(table-above-extra); it }
-  show figure.where(kind: image): it => { v(figure-above-extra); it }
+  // Extra space above in-flow figures only; a floating figure leaves none behind.
+  let above(space) = it => { if it.placement == none { v(space) }; it }
+  show figure.where(kind: table): above(table-above-extra)
+  show figure.where(kind: image): above(figure-above-extra)
   show math.equation.where(block: true): it => {
     set text(size: equation-size)
     block(
@@ -94,7 +96,7 @@
     )
   }
   show figure.where(kind: raw): set figure(supplement: o.labels.listing)
-  show figure.where(kind: raw): it => { v(code-figure-above); it }
+  show figure.where(kind: raw): above(code-figure-above)
   show figure.caption: it => context {
     set align(center)
     set text(size: caption-size, top-edge: body-top-edge, bottom-edge: body-bottom-edge)
